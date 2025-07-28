@@ -53,6 +53,12 @@ namespace JA {
             //give the model the velocity we calculated
             rigidbody.linearVelocity = projectedVelocity;
 
+            //to change between the player models animation files (standing -> walking)
+            //Debug.Log(inputHandler.moveAmount);
+            //0 -> that is for horizontal
+            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount,0);
+            
+
             if (animatorHandler.canRotate){
                 HandleRotation(delta);
             }

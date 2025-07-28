@@ -16,8 +16,10 @@ namespace JA {
             horizontal = Animator.StringToHash("Horizontal");
         }
 
+        //changes between animations
         public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement)
         {
+            
             #region Vertical
             float v = 0;
 
@@ -44,24 +46,28 @@ namespace JA {
             float h = 0;            
 
             if (horizontalMovement > 0 && horizontalMovement < 0.55f) {
-                v = 0.5f;
+                h = 0.5f;
             }
             else if (horizontalMovement > 0.55f) {
-                v = 1;
+                h = 1;
             }
             else if (horizontalMovement < 0 && horizontalMovement > -0.55f) {
-                v = -0.5f;
+                h = -0.5f;
             }
             else if (horizontalMovement < -0.55f) {
-                v = -1;
+                h = -1;
             } else {
-                v = 0;
+                h = 0;
             }
             #endregion
 
+
             //set values... with damp time blend time so it doesn't snap from on into other
             anim.SetFloat(vertical, v, 0.1f, Time.deltaTime);
+            //anim.SetFloat(vertical, v);
             anim.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
+
+            Debug.Log(anim.GetFloat(vertical));
         }
 
         public void CanRotate() {
