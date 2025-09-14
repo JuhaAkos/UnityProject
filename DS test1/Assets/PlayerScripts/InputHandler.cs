@@ -10,35 +10,19 @@ namespace JA {
         public float mouseX;
         public float mouseY;
 
+        public bool b_Input;
+        public float rollInputTimer;
+        public bool rollFlag;
+        public bool sprintFlag;
+        //public bool isInteracting;
+
         PlayerControls inputActions;
-        CameraHandler cameraHandler;
+        
 
         //2 axis values -> vector2
         Vector2 movementInput;
         Vector2 cameraInput;
-
-        private void Awake(){
-            cameraHandler = CameraHandler.singleton;
-            //Debug.Log("CM1: " + (cameraHandler!= null));
-        }
-
-        //START ADDED BECAUSE AWAKE WASN'T BEING CALLED AND CAMERAHANDLER DIDN'T GET INITIALIZED
-        private void Start(){
-            cameraHandler = CameraHandler.singleton;
-            //Debug.Log("CM1: " + (cameraHandler!= null));
-        }
-
-        private void FixedUpdate(){
-            float delta = Time.fixedDeltaTime;
-
-            //Debug.Log("CM: " + (cameraHandler!= null));
-            if (cameraHandler != null) {
-                
-                cameraHandler.FollowTarget(delta);
-                cameraHandler.HandleCameraRotation(delta, mouseX, mouseY);
-
-            }
-        }
+       
 
         public void OnEnable(){
             if (inputActions == null) {
@@ -61,6 +45,7 @@ namespace JA {
         public void TickInput(float delta)
         {
             MoveInput(delta);
+            HandleRollInput(delta);
         }
 
         //handlemovementinput
@@ -73,6 +58,44 @@ namespace JA {
             //no anim manager call? (other playlist)
             mouseX = cameraInput.x;
             mouseY = cameraInput.y;
+        }
+
+        private void HandleRollInput(float delta)
+        {
+            //b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
+            b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
+
+            /*
+            //Debug.Log("ezitt: " + UnityEngine.InputSystem.InputActionPhase.Started);
+            //started vs performed
+            //b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
+            b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
+            //b_Input = inputActions.PlayerActions.Roll.triggered; 
+            Debug.Log("rPhase: " + inputActions.PlayerActions.Roll.phase);
+            */
+
+            if (b_Input)
+            {
+                //Debug.Log("rPhase: " + inputActions.PlayerActions.Roll.triggered);
+                //Debug.Log("shift pressed");
+
+                //rollFlag = true;
+                rollInputTimer += delta;
+                sprintFlag = true;
+            }
+            else
+            {
+                //tap input -> roll
+                //hold input -> sprint
+                if (rollInputTimer > 0 && rollInputTimer < 0.5f)
+                {
+                    sprintFlag = false;
+                    rollFlag = true;
+                }
+
+                rollInputTimer = 0;
+            }
+            
         }
     }
 }

@@ -11,17 +11,22 @@ namespace JA {
         public Transform myTransform;
         [HideInInspector]
         public AnimatorHandler animatorHandler;
+        PlayerManager playerManager;
 
         public new Rigidbody rigidbody;
         //public Gameobject normalCamera;
 
-        [Header("Stats")]
+        [Header("Movement Stats")]
         [SerializeField]
         float movementSpeed = 5;
         [SerializeField]
+        float sprintSpeed = 7;
+        [SerializeField]
         float rotationSpeed = 10;
 
+        
         void Start(){
+            playerManager = GetComponentInParent<PlayerManager>();
             rigidbody = GetComponent<Rigidbody>();
             inputHandler = GetComponent<InputHandler>();
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
@@ -31,38 +36,6 @@ namespace JA {
             animatorHandler.Initialize();
         }
 
-        public void Update()
-        {
-            //frame update?
-            float delta = Time.deltaTime;
-            inputHandler.TickInput(delta);
-
-            //our direction = camera direction + player input
-            moveDirection = cameraObject.forward * inputHandler.vertical;
-            //left and right movement
-            moveDirection += cameraObject.right * inputHandler.horizontal;
-            //normalize (change length to 1)
-            moveDirection.Normalize();
-            moveDirection.y = 0;
-
-            float speed = movementSpeed;
-            moveDirection *= speed;
-
-
-            Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
-            //give the model the velocity we calculated
-            rigidbody.linearVelocity = projectedVelocity;
-
-            //to change between the player models animation files (standing -> walking)
-            //Debug.Log(inputHandler.moveAmount);
-            //0 -> that is for horizontal
-            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount,0);
-            
-
-            if (animatorHandler.canRotate){
-                HandleRotation(delta);
-            }
-        }
 
         #region Movement
         Vector3 normalVector;
@@ -97,6 +70,80 @@ namespace JA {
 
             myTransform.rotation = targetRotation;                
         }
+
+        public void HandleMovement(float delta){
+
+            if (inputHandler.rollFlag)
+            {
+                return;
+            }
+
+
+
+            //our direction = camera direction + player input
+            moveDirection = cameraObject.forward * inputHandler.vertical;
+            //left and right movement
+            moveDirection += cameraObject.right * inputHandler.horizontal;
+            //normalize (change length to 1)
+            moveDirection.Normalize();
+            moveDirection.y = 0;
+
+            float speed = movementSpeed;
+
+            if (inputHandler.sprintFlag)
+            {
+                speed = sprintSpeed;
+                playerManager.isSprinting = true;
+                moveDirection *= speed;
+            }
+            else
+            {
+                moveDirection *= speed;
+            }            
+
+
+            Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
+            //give the model the velocity we calculated
+            rigidbody.linearVelocity = projectedVelocity;
+
+            //to change between the player models animation files (standing -> walking)
+            //Debug.Log(inputHandler.moveAmount);
+            //0 -> that is for horizontal
+            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount,0, playerManager.isSprinting);
+            
+
+            if (animatorHandler.canRotate){
+                HandleRotation(delta);
+            }
+        }
+
+        public void HandleRollingAndSprinting(float delta) {
+            ////Debug.Log("RF: " + inputHandler.rollFlag);
+            if (animatorHandler.anim.GetBool("isInteracting"))
+                return;
+            if (inputHandler.rollFlag) {
+                moveDirection = cameraObject.forward * inputHandler.vertical;
+                moveDirection += cameraObject.right * inputHandler.horizontal;
+
+                if (inputHandler.moveAmount > 0) {      
+                    Debug.Log("rolling rolling rolling...");              
+                    animatorHandler.PlayTargetAnimation("Rolling", true);
+                    moveDirection.y= 0 ;
+                    //roll to move direction
+                    Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
+                    myTransform.rotation = rollRotation;
+                }
+                else {
+                    Debug.Log("tried to take a step back...");
+                    animatorHandler.PlayTargetAnimation("Backstep",true);
+                }
+            }
+        }
+
+
     }
+
+    
+
     #endregion
 }
