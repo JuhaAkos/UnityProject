@@ -13,8 +13,8 @@ namespace JA {
         public bool canRotate;
 
         public void Initialize()
-        {            
-            playerManager = GetComponentInParent<PlayerManager>();            
+        {
+            playerManager = GetComponentInParent<PlayerManager>();
             anim = GetComponent<Animator>();
             //Debug.Log("anim: " + (anim == null));
             inputHandler = GetComponentInParent<InputHandler>();
@@ -22,7 +22,7 @@ namespace JA {
             playerLocomotion = GetComponentInParent<PlayerLocomotion>();
             //vertical and horizontal will refer to the values in the animator element
             vertical = Animator.StringToHash("Vertical");
-            horizontal = Animator.StringToHash("Horizontal");            
+            horizontal = Animator.StringToHash("Horizontal");
         }
 
         //changes between animations
@@ -162,11 +162,18 @@ namespace JA {
             deltaPosition.y = 0;
             Vector3 velocity = deltaPosition / delta;
             playerLocomotion.rigidbody.linearVelocity = velocity;
+        }
 
+        public void EnableCombo()
+        {
+            //Debug.Log("enabled combo");
+            anim.SetBool("canDoCombo", true);
+        }
 
-
-
-
+        public void DisableCombo()
+        {
+            //Debug.Log("disabled combo");
+            anim.SetBool("canDoCombo", false);
         }
         
         

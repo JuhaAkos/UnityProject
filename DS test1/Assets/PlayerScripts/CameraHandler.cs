@@ -12,14 +12,14 @@ namespace JA {
         public Transform cameraPivotTransform; //up and down pivot?
         private Transform myTransform;
         private Vector3 cameraTransformPosition; //to also use camera z position changes
-        private LayerMask ignoreLayers;
+        public LayerMask ignoreLayers;
 
         private Vector3 cameraFollowVelocity = Vector3.zero; //for camspeed
 
         public static CameraHandler singleton;
 
         public float lookSpeed = 0.1f;
-        public float followSpeed = 0.05f;
+        public float followSpeed = 0.08f;
         public float pivotSpeed = 0.02f;
 
         private float defaultPosition;
@@ -34,13 +34,15 @@ namespace JA {
         public float cameraCollisionOffset = 0.2f; //how much the camera will bounce back from objects it collides with
         public float minimumCollisionOffset = 0.2f;
 
-        private void Awake(){
+        private void Awake()
+        {
             singleton = this; //camhandler init?
             myTransform = transform;
             defaultPosition = cameraTransform.localPosition.z;
-            
+
             //defines how camera interacts with surfaces
-            ignoreLayers = ~(1 << 8 | 1 << 9 |1 << 10);
+            ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
+            targetTransform = FindObjectOfType<PlayerManager>().transform;
         }
 
         public void FollowTarget(float delta) {

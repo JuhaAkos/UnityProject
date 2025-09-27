@@ -10,26 +10,47 @@ namespace JA {
         public float mouseX;
         public float mouseY;
 
+        //input names based on controller inputs for now
         public bool b_Input;
+        public bool a_Input;
+        public bool rb_Input;
+        public bool rt_Input;
+
+        public bool d_Pad_Up;
+        public bool d_Pad_Down;
+        public bool d_Pad_Left;
+        public bool d_Pad_Right;
+
         public float rollInputTimer;
         public bool rollFlag;
         public bool sprintFlag;
         //public bool isInteracting;
+        public bool comboFlag;
 
         PlayerControls inputActions;
-        
+        PlayerAttacker playerAttacker;
+        PlayerInventory playerInventory;
+        PlayerManager playerManager;
+
 
         //2 axis values -> vector2
         Vector2 movementInput;
         Vector2 cameraInput;
-       
 
-        public void OnEnable(){
-            if (inputActions == null) {
+        private void Awake()
+        {
+            playerAttacker = GetComponent<PlayerAttacker>();
+            playerInventory = GetComponent<PlayerInventory>();
+            playerManager = GetComponent<PlayerManager>();
+        }
+        public void OnEnable()
+        {
+            if (inputActions == null)
+            {
                 inputActions = new PlayerControls();
 
                 //record movement input
-                inputActions.PlayerMovement.Movement.performed += inputActions => movementInput = inputActions.ReadValue<Vector2>();   
+                inputActions.PlayerMovement.Movement.performed += inputActions => movementInput = inputActions.ReadValue<Vector2>();
                 //record camera angle change?           
                 inputActions.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
             }
@@ -46,10 +67,14 @@ namespace JA {
         {
             MoveInput(delta);
             HandleRollInput(delta);
+            HandleAttackInput(delta);
+            HandleQuickSlotsInput();
+            HandlerInteractingButtonInput();
         }
 
         //handlemovementinput
-        private void MoveInput(float delta){
+        private void MoveInput(float delta)
+        {
             horizontal = movementInput.x;
             vertical = movementInput.y;
             //clamp -> limit value between 0 and 1
@@ -95,7 +120,64 @@ namespace JA {
 
                 rollInputTimer = 0;
             }
-            
+
+        }
+
+        private void HandleAttackInput(float delta)
+        {
+            inputActions.PlayerActions.RB.performed += inputActions => rb_Input = true;
+            inputActions.PlayerActions.RT.performed += inputActions => rt_Input = true;
+
+            //right light attack
+            if (rb_Input)
+            {
+                //Debug.Log(playerManager.canDoCombo);
+                if (playerManager.canDoCombo)
+                {
+                    comboFlag = true;
+                    playerAttacker.HandleWeaponCombo(playerInventory.rightWeapon);
+                    comboFlag = false;
+                }
+                else
+                {
+                    if (playerManager.isInteracting)
+                    {
+                        return;
+                    }
+                    if (playerManager.canDoCombo)
+                    {
+                        return;
+                    }
+                    playerAttacker.HandleLightAttack(playerInventory.rightWeapon);
+                }
+
+            }
+
+            if (rt_Input)
+            {
+                playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
+            }
+        }
+
+        private void HandleQuickSlotsInput()
+        {
+            inputActions.PlayerInventoryActions.DPadRight.performed += inputActions => d_Pad_Right = true;
+            inputActions.PlayerInventoryActions.DPadLeft.performed += inputActions => d_Pad_Left = true;
+            if (d_Pad_Right)
+            {
+                playerInventory.ChangeRightWeapon();
+            }
+            else if (d_Pad_Left)
+            {
+                playerInventory.ChangeLeftWeapon();
+            }
+        }
+
+        private void HandlerInteractingButtonInput()
+        {
+            //Debug.Log("pressed F to interact!")
+            inputActions.PlayerActions.A.performed += inputActions => a_Input = true;
+            //ui
         }
     }
 }
