@@ -7,7 +7,7 @@ namespace JA {
         public int maxHealth;
         public int currentHealth;
 
-         Animator animator;
+        Animator animator;
 
         public void Awake()
         {

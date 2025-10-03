@@ -31,11 +31,11 @@ namespace JA {
         [SerializeField]
         float movementSpeed = 5;
         [SerializeField]
-        float sprintSpeed = 7;
+        float sprintSpeed = 6;
         [SerializeField]
-        float rotationSpeed = 12;
+        float rotationSpeed = 10;
         [SerializeField]
-        float fallingSpeed = 60;
+        float fallingSpeed = 300;
 
 
         void Start()
@@ -130,7 +130,7 @@ namespace JA {
                 {
                     moveDirection *= speed;
                     playerManager.isSprinting = false;
-                }                
+                }
             }
 
 
@@ -138,11 +138,23 @@ namespace JA {
             //give the model the velocity we calculated
             rigidbody.linearVelocity = projectedVelocity;
 
+            /*
+            //LOCKON
+            if (inputHandler.lockOnFlag && inputHandler.sprintFlag==false)
+            {
+                //blendtree with both horizontal and vertical values
+                animatorHandler.UpdateAnimatorValues(inputHandler.vertical, inputHandler.horizontal, playerManager.isSprinting);
+            }
+            else
+            {                
+                animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
+            }
+            */    
+
             //to change between the player models animation files (standing -> walking)
             //Debug.Log(inputHandler.moveAmount);
             //0 -> that is for horizontal
-            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
-
+            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);     
 
             if (animatorHandler.canRotate)
             {
@@ -195,7 +207,7 @@ namespace JA {
             if (playerManager.isInAir)
             {
                 rigidbody.AddForce(-Vector3.up * fallingSpeed);
-                rigidbody.AddForce(moveDirection * fallingSpeed / 5f);                
+                rigidbody.AddForce(moveDirection * fallingSpeed / 5f);
             }
 
             Vector3 dir = moveDirection;
@@ -249,7 +261,7 @@ namespace JA {
                     rigidbody.linearVelocity = vel * (movementSpeed / 2);
                     playerManager.isInAir = true;
                 }
-            }            
+            }
 
             if (playerManager.isGrounded)
             {
@@ -264,6 +276,26 @@ namespace JA {
             }
         }
 
+        public void HandleJumping()
+        {
+            if (playerManager.isInteracting)
+            {
+                return;
+            }
+
+            if (inputHandler.jump_Input)
+            {
+                if (inputHandler.moveAmount > 0)
+                {
+                    moveDirection = cameraObject.forward * inputHandler.vertical;
+                    moveDirection += cameraObject.right * inputHandler.horizontal;
+                    animatorHandler.PlayTargetAnimation("Jump", true);
+                    moveDirection.y = 0;
+                    Quaternion jumpRotation = Quaternion.LookRotation(moveDirection);
+                    myTransform.rotation = jumpRotation;
+                }
+            }
+        }
 
     }
 

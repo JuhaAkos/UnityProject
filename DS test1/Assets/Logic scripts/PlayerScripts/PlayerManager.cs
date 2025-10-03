@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace JA {
-    public class PlayerManager : MonoBehaviour
+    public class PlayerManager : CharacterManager
     {
         InputHandler inputHandler;
         Animator anim;
@@ -48,29 +48,33 @@ namespace JA {
             //Debug.Log("Interact? - " + inputHandler.isInteracting);     
 
             canDoCombo = anim.GetBool("canDoCombo");
+            anim.SetBool("isInAir", isInAir);
 
-            //FROM LOCOMOTION       
-            inputHandler.TickInput(delta);
-            playerLocomotion.HandleMovement(delta);
-            playerLocomotion.HandleRollingAndSprinting(delta);
-            playerLocomotion.HandleFalling(delta, playerLocomotion.moveDirection);
-            //Debug.Log("isInAir: " + isInAir);
+            inputHandler.TickInput(delta);  
+            //FROM LOCOMOTION   
+            playerLocomotion.HandleJumping(); 
+            playerLocomotion.HandleRollingAndSprinting(delta);        
 
-            CheckForInteractableObject();
+            CheckForInteractableObject();        
         }
 
         private void FixedUpdate()
         {
             float delta = Time.fixedDeltaTime;
 
+            /* MOVED
             //Debug.Log("CM: " + (cameraHandler!= null));
             if (cameraHandler != null)
             {
-
                 cameraHandler.FollowTarget(delta);
                 cameraHandler.HandleCameraRotation(delta, inputHandler.mouseX, inputHandler.mouseY);
-
             }
+            */    
+
+            playerLocomotion.HandleMovement(delta);            
+            playerLocomotion.HandleFalling(delta, playerLocomotion.moveDirection);
+            //Debug.Log("isInAir: " + isInAir);
+                             
         }
 
 
@@ -78,7 +82,7 @@ namespace JA {
         {
             //reseting most flags
             inputHandler.rollFlag = false;
-            inputHandler.sprintFlag = false;
+            //inputHandler.sprintFlag = false; //EP23
             inputHandler.rb_Input = false;
             inputHandler.rt_Input = false;
             //isSprinting = inputHandler.b_Input; //bugged, no need
@@ -87,7 +91,14 @@ namespace JA {
             inputHandler.d_Pad_Left = false;
             inputHandler.d_Pad_Right = false;
             inputHandler.a_Input = false;
+            inputHandler.jump_Input = false;
 
+            float delta = Time.deltaTime;
+            if (cameraHandler != null)
+            {
+                cameraHandler.FollowTarget(delta);
+                cameraHandler.HandleCameraRotation(delta, inputHandler.mouseX, inputHandler.mouseY);
+            }
 
             if (isInAir)
             {
