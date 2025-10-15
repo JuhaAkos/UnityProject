@@ -4,15 +4,16 @@ namespace JA {
     public class PlayerLocomotion : MonoBehaviour
     {
         Transform cameraObject;
-        InputHandler inputHandler;
-        public Vector3 moveDirection; //which way we are facing
-        //public for fall movement
-
+        InputHandler inputHandler;      
         [HideInInspector]
         public Transform myTransform;
         [HideInInspector]
         public AnimatorHandler animatorHandler;
         PlayerManager playerManager;
+        PlayerStats playerStats;
+
+        public Vector3 moveDirection; //which way we are facing
+        //public for fall movement
 
         public new Rigidbody rigidbody;
         //public Gameobject normalCamera;
@@ -37,13 +38,27 @@ namespace JA {
         [SerializeField]
         float fallingSpeed = 300;
 
+        //seri used instead of public for inspector
+        [Header("Stamina Costs")]
+        [SerializeField]
+        int rollStaminaCost = 15;
+        int backstepStaminaCost = 12;
+        int sprintStaminaCost = 1;
 
-        void Start()
-        {
+        public CapsuleCollider characterCollider;
+        public CapsuleCollider characterCollisionBlockerCollider;
+
+        private void Awake()
+        {            
             playerManager = GetComponentInParent<PlayerManager>();
+            playerStats = GetComponent<PlayerStats>();
             rigidbody = GetComponent<Rigidbody>();
             inputHandler = GetComponent<InputHandler>();
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
+        }
+
+        void Start()
+        {
             cameraObject = Camera.main.transform;
             myTransform = transform;
 
@@ -51,6 +66,9 @@ namespace JA {
 
             playerManager.isGrounded = true;
             ignoreForGroundCheck = ~(1 << 8 | 1 << 11);
+
+            //stop player and enemies from pushing eachother
+            Physics.IgnoreCollision(characterCollider, characterCollisionBlockerCollider, true);
         }
 
 
@@ -117,6 +135,7 @@ namespace JA {
                 speed = sprintSpeed;
                 playerManager.isSprinting = true;
                 moveDirection *= speed;
+                playerStats.TakeStaminaDamage(sprintStaminaCost);
             }
             else
             {
@@ -138,7 +157,7 @@ namespace JA {
             //give the model the velocity we calculated
             rigidbody.linearVelocity = projectedVelocity;
 
-            /*
+            
             //LOCKON
             if (inputHandler.lockOnFlag && inputHandler.sprintFlag==false)
             {
@@ -149,7 +168,7 @@ namespace JA {
             {                
                 animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
             }
-            */    
+             
 
             //to change between the player models animation files (standing -> walking)
             //Debug.Log(inputHandler.moveAmount);
@@ -163,10 +182,16 @@ namespace JA {
         }
 
         public void HandleRollingAndSprinting(float delta)
-        {
-            ////Debug.Log("RF: " + inputHandler.rollFlag);
+        {            
             if (animatorHandler.anim.GetBool("isInteracting"))
                 return;
+
+            if(playerStats.currentStamina <= 0)
+            {
+                return;
+            }
+            
+
             if (inputHandler.rollFlag)
             {
                 moveDirection = cameraObject.forward * inputHandler.vertical;
@@ -180,11 +205,13 @@ namespace JA {
                     //roll to move direction
                     Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
                     myTransform.rotation = rollRotation;
+                    playerStats.TakeStaminaDamage(rollStaminaCost);
                 }
                 else
                 {
                     Debug.Log("tried to take a step back...");
                     animatorHandler.PlayTargetAnimation("Backstep", true);
+                    playerStats.TakeStaminaDamage(backstepStaminaCost);
                 }
             }
         }
@@ -279,6 +306,11 @@ namespace JA {
         public void HandleJumping()
         {
             if (playerManager.isInteracting)
+            {
+                return;
+            }
+
+            if(playerStats.currentStamina <= 0)
             {
                 return;
             }

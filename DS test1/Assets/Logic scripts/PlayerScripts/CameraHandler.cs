@@ -10,6 +10,7 @@ namespace JA {
     public class CameraHandler : MonoBehaviour
     {
         InputHandler inputHandler;
+        PlayerManager playerManager;
 
         public Transform targetTransform; //camera follows this object
         public Transform cameraTransform;
@@ -50,7 +51,10 @@ namespace JA {
         public Transform leftLockTarget;
         public Transform rightLockTarget;
         public float maximumLockOnDistance = 30;
-
+        //lockon and non-lockon camera height
+        public float lockedPivotPosition = 2.25f;
+        public float unlockedPivotPosition = 1.65f;
+        public LayerMask enviromentLayer;
 
         private void Awake()
         {
@@ -62,6 +66,12 @@ namespace JA {
             ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
             targetTransform = FindObjectOfType<PlayerManager>().transform;
             inputHandler = FindObjectOfType<InputHandler>();
+            playerManager = FindObjectOfType<PlayerManager>();
+        }
+
+        private void Start()
+        {
+            enviromentLayer = LayerMask.NameToLayer("Enviroment");
         }
 
         public void FollowTarget(float delta)
@@ -118,7 +128,7 @@ namespace JA {
                 transform.rotation = targetRotation;
 
                 dir = currentLockOnTarget.position - cameraPivotTransform.position;
-                dir.Normalize();                
+                dir.Normalize();
 
                 targetRotation = Quaternion.LookRotation(dir);
                 Vector3 eulerAngle = targetRotation.eulerAngles;
@@ -166,6 +176,7 @@ namespace JA {
             //create list on lockon targets
             for (int i = 0; i < colliders.Length; i++)
             {
+
                 CharacterManager character = colliders[i].GetComponent<CharacterManager>();
 
                 if (character != null)
@@ -174,12 +185,28 @@ namespace JA {
                     float distanceFromTarget = Vector3.Distance(targetTransform.position, character.transform.position);
                     float viewableAngle = Vector3.Angle(lockTargetDirection, cameraTransform.forward);
 
+                    RaycastHit hit;
+
                     //do not lock onto yourself, do not lock onto most things unseen
                     if (character.transform.root != targetTransform.transform.root
-                        && viewableAngle > -50 && viewableAngle < 50
+                        && viewableAngle > -75 && viewableAngle < 75
                         && distanceFromTarget <= maximumLockOnDistance)
                     {
-                        availableTargets.Add(character);
+                        //LINECAST: create a raycast line between two points -> good for line of sight checks
+                        if (Physics.Linecast(playerManager.lockOnTransform.position, character.lockOnTransform.position, out hit))
+                        {
+                            Debug.DrawLine(playerManager.lockOnTransform.position, character.lockOnTransform.position);
+
+                            if (hit.transform.gameObject.layer == enviromentLayer)
+                            {
+                                //no lock on because of coverage
+                            }
+                            else
+                            {
+                                availableTargets.Add(character);
+                                //Debug.Log("LENGTH: " + availableTargets.Count);
+                            }
+                        }
                     }
                 }
             }
@@ -187,6 +214,7 @@ namespace JA {
             //find closestlockon
             for (int k = 0; k < availableTargets.Count; k++)
             {
+                //Debug.Log("FOR k: " + k);
                 float distanceFromTarget = Vector3.Distance(targetTransform.position, availableTargets[k].transform.position);
 
                 if (distanceFromTarget < shortestDistance)
@@ -199,35 +227,62 @@ namespace JA {
                 {
                     //if they are on the same x coordinate -> zero value -> not added
                     Vector3 relativeEnemyPosition = currentLockOnTarget.InverseTransformPoint(availableTargets[k].transform.position);
-                    Debug.Log("Relative.x: " + relativeEnemyPosition.x);
-                    Debug.Log("Relative.x calc: " + currentLockOnTarget.InverseTransformPoint(availableTargets[k].transform.position));
-                    Debug.Log("Target: " + currentLockOnTarget);
+                    //Debug.Log("Relative.x: " + relativeEnemyPosition.x);
+                    //Debug.Log("Relative.x calc: " + currentLockOnTarget.InverseTransformPoint(availableTargets[k].transform.position));
+                    //Debug.Log("Target: " + currentLockOnTarget);
                     //changing between apllicable targets
                     var distanceFromLeftTarget = currentLockOnTarget.transform.position.x - availableTargets[k].transform.position.x;
                     var distanceFromRightTarget = currentLockOnTarget.transform.position.x + availableTargets[k].transform.position.x;
 
-                    //Debug.Log("Relative.x: " + relativeEnemyPosition.x + ", d from L: " + distanceFromLeftTarget + ", shortest d from L: " + shortestDistanceOfLeftTarget);
-                    if (relativeEnemyPosition.x > 0.00 && distanceFromLeftTarget < shortestDistanceOfLeftTarget)
+                    /*
+                    Debug.Log("Relative.x: " + relativeEnemyPosition.x + " -> bigger than zero? - " + (relativeEnemyPosition.x > 0.00f) +
+                        "\nL (>0) - distance from L: " + distanceFromLeftTarget + ", SHORTEST dist. from L: " + shortestDistanceOfLeftTarget +
+                       "\nR (<0) - distance from R: " + distanceFromRightTarget + ", SHORTEST dist. from R: " + shortestDistanceOfRightTarget
+
+                    );
+                    */
+
+                    if (relativeEnemyPosition.x > 0.00f && distanceFromLeftTarget < shortestDistanceOfLeftTarget)
                     {
                         Debug.Log("found better on left");
                         shortestDistanceOfLeftTarget = distanceFromLeftTarget;
                         leftLockTarget = availableTargets[k].lockOnTransform;
                     }
 
-                    if (relativeEnemyPosition.x < 0.00 && distanceFromRightTarget < shortestDistanceOfRightTarget)
+                    if (relativeEnemyPosition.x < 0.00f && distanceFromRightTarget < shortestDistanceOfRightTarget)
                     {
+                        Debug.Log("found better on right");
                         shortestDistanceOfRightTarget = distanceFromRightTarget;
                         rightLockTarget = availableTargets[k].lockOnTransform;
                     }
                 }
             }
+
+            
         }
 
         public void ClearLockOnTargets()
         {
             availableTargets.Clear();
             nearestLockOnTarget = null;
-            currentLockOnTarget = null;            
+            currentLockOnTarget = null;
+        }
+
+        public void SetCameraHeight()
+        {
+            Vector3 velocity = Vector3.zero;
+            Vector3 newLockedPosition = new Vector3(0, lockedPivotPosition);
+            Vector3 newUnlockedPosition = new Vector3(0, unlockedPivotPosition);
+
+            if (currentLockOnTarget != null)
+            {
+                Debug.Log("FENT");
+                cameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(cameraPivotTransform.transform.localPosition, newLockedPosition, ref velocity, Time.deltaTime);
+            }
+            else
+            {
+                cameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(cameraPivotTransform.transform.localPosition, newUnlockedPosition, ref velocity, Time.deltaTime);
+            }
         }
     }
 }

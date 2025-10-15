@@ -4,6 +4,7 @@ namespace JA
 {
     public class WeaponSlotManager : MonoBehaviour
     {
+        PlayerManager playerManager;
         WeaponHolderSlot leftHandSlot;
         WeaponHolderSlot rightHandSlot;
 
@@ -20,6 +21,7 @@ namespace JA
 
         private void Awake()
         {
+            playerManager = GetComponentInParent<PlayerManager>();
             animator = GetComponent<Animator>();
             quickSlotsUI = FindObjectOfType<QuickSlotsUI>();
             playerStats = GetComponentInParent<PlayerStats>();
@@ -99,24 +101,22 @@ namespace JA
             }
         }
 
-        public void OpenRightDamageCollider()
+        public void OpenDamageCollider()
         {
-            rightHandDamageCollider.EnableDamageCollider();
+            if (playerManager.isUsingRightHand)
+            {
+                rightHandDamageCollider.EnableDamageCollider();
+            } else if (playerManager.isUsingLeftHand)
+            {
+                leftHandDamageCollider.EnableDamageCollider();
+            }
+            
         }
 
-        public void OpenleftDamageCollider()
-        {
-            leftHandDamageCollider.EnableDamageCollider();
-        }
-
-        public void CloseRightDamageCollider()
+        public void CloseDamageCollider()
         {
             rightHandDamageCollider.DisableDamageCollider();
-        }
-
-        public void CloseleftDamageCollider()
-        {
-            leftHandDamageCollider.DisableDamageCollider();
+            //leftHandDamageCollider.DisableDamageCollider();
         }
 
         #endregion

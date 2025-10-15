@@ -7,17 +7,24 @@ namespace JA
         AnimatorHandler animatorHandler;
         InputHandler inputHandler;
         WeaponSlotManager weaponSlotManager;
+        PlayerStats playerStats;
         public string lastAttack;
 
         private void Awake()
         {
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
+            playerStats = GetComponent<PlayerStats>();
             inputHandler = GetComponent<InputHandler>();
             weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
         }
 
         public void HandleWeaponCombo(WeaponItem weapon)
         {
+            if(playerStats.currentStamina <= 0)
+            {
+                return;
+            }
+
             Debug.Log("Tried to combo");
             if (inputHandler.comboFlag)
             {
@@ -32,6 +39,11 @@ namespace JA
 
         public void HandleLightAttack(WeaponItem weapon)
         {
+            if (playerStats.currentStamina <= 0)
+            {
+                return;
+            }
+            
             weaponSlotManager.attackingWeapon = weapon;
             animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_1, true);
             lastAttack = weapon.OH_Light_Attack_1;
@@ -40,6 +52,11 @@ namespace JA
 
         public void HandleHeavyAttack(WeaponItem weapon)
         {
+            if (playerStats.currentStamina <= 0)
+            {
+                return;
+            }
+            
             weaponSlotManager.attackingWeapon = weapon;
             animatorHandler.PlayTargetAnimation(weapon.OH_Heavy_Attack_1, true);
             lastAttack = weapon.OH_Heavy_Attack_1;

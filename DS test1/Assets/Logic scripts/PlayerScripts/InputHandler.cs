@@ -38,7 +38,9 @@ namespace JA
         PlayerAttacker playerAttacker;
         PlayerInventory playerInventory;
         PlayerManager playerManager;
+        PlayerStats playerStats;
         CameraHandler cameraHandler;
+        AnimatorHandler animatorHandler;
 
 
         //2 axis values -> vector2
@@ -50,7 +52,9 @@ namespace JA
             playerAttacker = GetComponent<PlayerAttacker>();
             playerInventory = GetComponent<PlayerInventory>();
             playerManager = GetComponent<PlayerManager>();
+            playerStats = GetComponent<PlayerStats>();
             cameraHandler = FindObjectOfType<CameraHandler>();
+            animatorHandler = GetComponentInChildren<AnimatorHandler>();
         }
         public void OnEnable()
         {
@@ -69,6 +73,10 @@ namespace JA
                 inputActions.PlayerActions.RT.performed += i => rt_Input = true;
                 //interact
                 inputActions.PlayerActions.A.performed += i => a_Input = true;
+
+                inputActions.PlayerActions.Roll.performed += i => b_Input = true;
+                inputActions.PlayerActions.Roll.canceled += inputActions => b_Input = false;
+
                 //jump
                 inputActions.PlayerActions.Jump.performed += i => jump_Input = true;
 
@@ -113,8 +121,8 @@ namespace JA
         {
             //b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
 
-            b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
-            sprintFlag = b_Input;
+            //b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
+            //sprintFlag = b_Input;
 
             if (b_Input)
             {
@@ -124,14 +132,26 @@ namespace JA
                 //rollFlag = true;
                 rollInputTimer += delta;
                 //sprintFlag = true;
+
+                if (playerStats.currentStamina <= 0)
+                {
+                    b_Input = false;
+                    sprintFlag = false;
+                }
+                
+                if (moveAmount > 0.5f && playerStats.currentStamina > 0)
+                {
+                    sprintFlag = true;
+                }
             }
             else
             {
+                sprintFlag = false;
                 //tap input -> roll
                 //hold input -> sprint
                 if (rollInputTimer > 0 && rollInputTimer < 0.5f)
                 {
-                    sprintFlag = false;
+                    //sprintFlag = false;
                     rollFlag = true;
                 }
 
@@ -166,6 +186,8 @@ namespace JA
                     {
                         return;
                     }
+
+                    animatorHandler.anim.SetBool("isUsingRightHand", true);
                     playerAttacker.HandleLightAttack(playerInventory.rightWeapon);
                 }
 
@@ -248,6 +270,8 @@ namespace JA
                     cameraHandler.currentLockOnTarget = cameraHandler.rightLockTarget;
                 }
             }
+
+            cameraHandler.SetCameraHeight();
         }
     }
     

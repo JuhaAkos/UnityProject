@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 5ee1c24ba5f852a4799a4426de06ec30
 ModelImporter:
-  serializedVersion: 22200
+  serializedVersion: 24200
   internalIDToNameTable: []
   externalObjects: {}
   materials:
@@ -228,7 +228,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.15583038
+        functionName: EnableIsInvulnerable
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 243612ce7eefc0d4cad99799a1871c6f, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.87190807
+        functionName: DisableIsInvulnerable
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 243612ce7eefc0d4cad99799a1871c6f, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -324,14 +338,14 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.31562495
-        functionName: OpenRightDamageCollider
+        functionName: OpenDamageCollider
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.65
-        functionName: CloseRightDamageCollider
+        functionName: CloseDamageCollider
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
         floatParameter: 0
@@ -381,6 +395,9 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8

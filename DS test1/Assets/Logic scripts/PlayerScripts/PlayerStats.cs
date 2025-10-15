@@ -1,23 +1,20 @@
 using UnityEngine;
 
 namespace JA {
-    public class PlayerStats : MonoBehaviour
+    public class PlayerStats : CharacterStats
     {
-        public int healthLevel = 10;
-        public int maxHealth;
-        public int currentHealth;
-
-        public int staminaLevel = 10;
-        public int maxStamina;
-        public int currentStamina;
-
         public HealthBar healthbar;
         public StaminaBar staminabar;
 
+        public float staminaRegenerationAmount = 6;
+        public float staminaRegenTimer = 0;
+
         AnimatorHandler animatorHandler;
+        PlayerManager playerManager;
 
         public void Awake()
         {
+            playerManager = GetComponent<PlayerManager>();
             healthbar = FindObjectOfType<HealthBar>();
             staminabar = FindObjectOfType<StaminaBar>();
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
@@ -43,7 +40,7 @@ namespace JA {
             return maxHealth;
         }
 
-        private int SetMaxStaminaFromStaminaLevel()
+        private float SetMaxStaminaFromStaminaLevel()
         {
             maxStamina = staminaLevel * 10;
             return maxStamina;
@@ -51,6 +48,15 @@ namespace JA {
 
         public void TakeDamage(int damage)
         {
+            if (playerManager.isInvulnerable)
+            {
+                return;
+            }
+            
+            if (isDead)
+            {
+                return;
+            }
             currentHealth = currentHealth - damage;
 
             healthbar.SetCurrentHealth(currentHealth);
@@ -62,7 +68,8 @@ namespace JA {
                 currentHealth = 0;
                 //no transition connected to locomotion so won't reset state
                 animatorHandler.PlayTargetAnimation("Dead_01", true);
-                //handler death                
+
+                isDead = true;              
             }
         }
 
@@ -70,6 +77,22 @@ namespace JA {
         {
             currentStamina = currentStamina - damage;
             staminabar.SetCurrentStamina(currentStamina);
+        }
+
+        public void RegenrateStamina()
+        {
+            if (playerManager.isInteracting)
+            {
+                staminaRegenTimer = 0;
+            } else {
+                staminaRegenTimer += Time.deltaTime;
+                //+1sec delay
+                if (currentStamina < maxStamina && staminaRegenTimer > 2f)
+                {
+                    currentStamina += staminaRegenerationAmount * Time.deltaTime;
+                    staminabar.SetCurrentStamina(Mathf.RoundToInt(currentStamina));
+                }
+            }            
         }
     }
 }

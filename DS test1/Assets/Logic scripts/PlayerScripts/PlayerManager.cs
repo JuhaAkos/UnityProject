@@ -7,6 +7,7 @@ namespace JA {
         Animator anim;
         PlayerLocomotion playerLocomotion;
         CameraHandler cameraHandler;
+        PlayerStats playerStats;
 
         [Header("Player Flags")]
         public bool isInteracting;
@@ -14,6 +15,9 @@ namespace JA {
         public bool isInAir;
         public bool isGrounded;
         public bool canDoCombo;
+        public bool isUsingRightHand;
+        public bool isUsingLeftHand;
+        public bool isInvulnerable;
 
 
         void Start()
@@ -23,6 +27,8 @@ namespace JA {
 
             inputHandler = GetComponent<InputHandler>();
             playerLocomotion = GetComponent<PlayerLocomotion>();
+
+            playerStats = GetComponent<PlayerStats>();
 
 
             //START ADDED BECAUSE AWAKE WASN'T BEING CALLED AND CAMERAHANDLER DIDN'T GET INITIALIZED
@@ -48,13 +54,19 @@ namespace JA {
             //Debug.Log("Interact? - " + inputHandler.isInteracting);     
 
             canDoCombo = anim.GetBool("canDoCombo");
+            isInvulnerable = anim.GetBool("isInvulnerable");
             anim.SetBool("isInAir", isInAir);
+
+            isUsingRightHand = anim.GetBool("isUsingRightHand");
+            isUsingLeftHand = anim.GetBool("isUsingLeftHand");
 
             inputHandler.TickInput(delta);  
             //FROM LOCOMOTION   
-            playerLocomotion.HandleJumping(); 
-            playerLocomotion.HandleRollingAndSprinting(delta);        
+            playerLocomotion.HandleJumping();
+            playerLocomotion.HandleRollingAndSprinting(delta);
 
+            playerStats.RegenrateStamina();
+            
             CheckForInteractableObject();        
         }
 

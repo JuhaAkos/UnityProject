@@ -1,9 +1,8 @@
 using UnityEngine;
 
 namespace JA {
-    public class AnimatorHandler : MonoBehaviour
-    {
-        public Animator anim;
+    public class AnimatorHandler : AnimatorManager
+    {        
         InputHandler inputHandler;
         PlayerManager playerManager;
 
@@ -98,14 +97,6 @@ namespace JA {
             //Debug.Log(anim.GetFloat(vertical));
         }
 
-        public void PlayTargetAnimation(string targetAnim, bool isInteracting)
-        {
-            //if the animation is interacting -> apply root motion
-            anim.applyRootMotion = isInteracting;
-            anim.SetBool("isInteracting", isInteracting);
-            anim.CrossFade(targetAnim, 00.2f);
-        }
-
         public void CanRotate()
         {
             canRotate = true;
@@ -174,6 +165,16 @@ namespace JA {
         {
             //Debug.Log("disabled combo");
             anim.SetBool("canDoCombo", false);
+        }
+
+        public void EnableIsInvulnerable()
+        {
+            anim.SetBool("isInvulnerable", true);
+        }
+        
+         public void DisableIsInvulnerable()
+        {
+            anim.SetBool("isInvulnerable", false);
         }
         
         

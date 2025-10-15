@@ -1,12 +1,8 @@
 using UnityEngine;
 
 namespace JA {
-    public class EnemyStats : MonoBehaviour
+    public class EnemyStats : CharacterStats
     {
-        public int healthLevel = 10;
-        public int maxHealth;
-        public int currentHealth;
-
         Animator animator;
 
         public void Awake()
@@ -32,6 +28,10 @@ namespace JA {
 
         public void TakeDamage(int damage)
         {
+            if (isDead)
+            {
+                return;
+            }
             currentHealth = currentHealth - damage;            
 
             animator.Play("Damage_01");
@@ -41,7 +41,8 @@ namespace JA {
                 currentHealth = 0;
                 //no transition connected to locomotion so won't reset state
                 animator.Play("Dead_01");
-                //handler death                
+                //handler death  
+                isDead = true;              
             }
         }
     }
