@@ -40,6 +40,19 @@ namespace JA
             }
         }
 
+        public void LoadWeaponOnSlot(Item item, bool isLeft)
+        {
+            if (isLeft)
+            {
+                leftHandSlot.LoadWeaponModel(item);
+            }
+            else
+            {
+                rightHandSlot.LoadWeaponModel(item);
+            }
+        }
+
+
         public void LoadWeaponOnSlot(WeaponItem weaponItem, bool isLeft)
         {
             if (isLeft)

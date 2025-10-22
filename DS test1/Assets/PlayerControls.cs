@@ -310,6 +310,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Estus"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca30e2ee-9972-432b-bab7-63693ae279e6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -442,6 +451,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""LockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""37dc8cfb-373e-4f40-a317-37a93f6c09bc"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Estus"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -578,6 +598,34 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Main Menu UI Navigation"",
+            ""id"": ""2b78433a-a205-4cce-857e-504ebd7474f3"",
+            ""actions"": [
+                {
+                    ""name"": ""ClickOnButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""7d740973-547a-4e39-bc16-a38ae1dfab11"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""28675f56-c46c-4a14-b2f5-c713b54f7d53"",
+                    ""path"": ""<Mouse>/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ClickOnButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -596,12 +644,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerActions_A = m_PlayerActions.FindAction("A", throwIfNotFound: true);
         m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
         m_PlayerActions_LockOn = m_PlayerActions.FindAction("LockOn", throwIfNotFound: true);
+        m_PlayerActions_Estus = m_PlayerActions.FindAction("Estus", throwIfNotFound: true);
         // Player Inventory Actions
         m_PlayerInventoryActions = asset.FindActionMap("Player Inventory Actions", throwIfNotFound: true);
         m_PlayerInventoryActions_DPadUp = m_PlayerInventoryActions.FindAction("D-Pad Up", throwIfNotFound: true);
         m_PlayerInventoryActions_DPadDown = m_PlayerInventoryActions.FindAction("D-Pad Down", throwIfNotFound: true);
         m_PlayerInventoryActions_DPadLeft = m_PlayerInventoryActions.FindAction("D-Pad Left", throwIfNotFound: true);
         m_PlayerInventoryActions_DPadRight = m_PlayerInventoryActions.FindAction("D-Pad Right", throwIfNotFound: true);
+        // Main Menu UI Navigation
+        m_MainMenuUINavigation = asset.FindActionMap("Main Menu UI Navigation", throwIfNotFound: true);
+        m_MainMenuUINavigation_ClickOnButton = m_MainMenuUINavigation.FindAction("ClickOnButton", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -609,6 +661,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_PlayerMovement.enabled, "This will cause a leak and performance issues, PlayerControls.PlayerMovement.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_PlayerActions.enabled, "This will cause a leak and performance issues, PlayerControls.PlayerActions.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_PlayerInventoryActions.enabled, "This will cause a leak and performance issues, PlayerControls.PlayerInventoryActions.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_MainMenuUINavigation.enabled, "This will cause a leak and performance issues, PlayerControls.MainMenuUINavigation.Disable() has not been called.");
     }
 
     /// <summary>
@@ -819,6 +872,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_A;
     private readonly InputAction m_PlayerActions_Jump;
     private readonly InputAction m_PlayerActions_LockOn;
+    private readonly InputAction m_PlayerActions_Estus;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player Actions".
     /// </summary>
@@ -854,6 +908,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerActions/LockOn".
         /// </summary>
         public InputAction @LockOn => m_Wrapper.m_PlayerActions_LockOn;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerActions/Estus".
+        /// </summary>
+        public InputAction @Estus => m_Wrapper.m_PlayerActions_Estus;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -898,6 +956,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @LockOn.started += instance.OnLockOn;
             @LockOn.performed += instance.OnLockOn;
             @LockOn.canceled += instance.OnLockOn;
+            @Estus.started += instance.OnEstus;
+            @Estus.performed += instance.OnEstus;
+            @Estus.canceled += instance.OnEstus;
         }
 
         /// <summary>
@@ -927,6 +988,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @LockOn.started -= instance.OnLockOn;
             @LockOn.performed -= instance.OnLockOn;
             @LockOn.canceled -= instance.OnLockOn;
+            @Estus.started -= instance.OnEstus;
+            @Estus.performed -= instance.OnEstus;
+            @Estus.canceled -= instance.OnEstus;
         }
 
         /// <summary>
@@ -1089,6 +1153,102 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="PlayerInventoryActionsActions" /> instance referencing this action map.
     /// </summary>
     public PlayerInventoryActionsActions @PlayerInventoryActions => new PlayerInventoryActionsActions(this);
+
+    // Main Menu UI Navigation
+    private readonly InputActionMap m_MainMenuUINavigation;
+    private List<IMainMenuUINavigationActions> m_MainMenuUINavigationActionsCallbackInterfaces = new List<IMainMenuUINavigationActions>();
+    private readonly InputAction m_MainMenuUINavigation_ClickOnButton;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Main Menu UI Navigation".
+    /// </summary>
+    public struct MainMenuUINavigationActions
+    {
+        private @PlayerControls m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public MainMenuUINavigationActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "MainMenuUINavigation/ClickOnButton".
+        /// </summary>
+        public InputAction @ClickOnButton => m_Wrapper.m_MainMenuUINavigation_ClickOnButton;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_MainMenuUINavigation; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="MainMenuUINavigationActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(MainMenuUINavigationActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="MainMenuUINavigationActions" />
+        public void AddCallbacks(IMainMenuUINavigationActions instance)
+        {
+            if (instance == null || m_Wrapper.m_MainMenuUINavigationActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MainMenuUINavigationActionsCallbackInterfaces.Add(instance);
+            @ClickOnButton.started += instance.OnClickOnButton;
+            @ClickOnButton.performed += instance.OnClickOnButton;
+            @ClickOnButton.canceled += instance.OnClickOnButton;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="MainMenuUINavigationActions" />
+        private void UnregisterCallbacks(IMainMenuUINavigationActions instance)
+        {
+            @ClickOnButton.started -= instance.OnClickOnButton;
+            @ClickOnButton.performed -= instance.OnClickOnButton;
+            @ClickOnButton.canceled -= instance.OnClickOnButton;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="MainMenuUINavigationActions.UnregisterCallbacks(IMainMenuUINavigationActions)" />.
+        /// </summary>
+        /// <seealso cref="MainMenuUINavigationActions.UnregisterCallbacks(IMainMenuUINavigationActions)" />
+        public void RemoveCallbacks(IMainMenuUINavigationActions instance)
+        {
+            if (m_Wrapper.m_MainMenuUINavigationActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="MainMenuUINavigationActions.AddCallbacks(IMainMenuUINavigationActions)" />
+        /// <seealso cref="MainMenuUINavigationActions.RemoveCallbacks(IMainMenuUINavigationActions)" />
+        /// <seealso cref="MainMenuUINavigationActions.UnregisterCallbacks(IMainMenuUINavigationActions)" />
+        public void SetCallbacks(IMainMenuUINavigationActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MainMenuUINavigationActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MainMenuUINavigationActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="MainMenuUINavigationActions" /> instance referencing this action map.
+    /// </summary>
+    public MainMenuUINavigationActions @MainMenuUINavigation => new MainMenuUINavigationActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Player Movement" which allows adding and removing callbacks.
     /// </summary>
@@ -1174,6 +1334,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLockOn(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Estus" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEstus(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Player Inventory Actions" which allows adding and removing callbacks.
@@ -1210,5 +1377,20 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDPadRight(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Main Menu UI Navigation" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="MainMenuUINavigationActions.AddCallbacks(IMainMenuUINavigationActions)" />
+    /// <seealso cref="MainMenuUINavigationActions.RemoveCallbacks(IMainMenuUINavigationActions)" />
+    public interface IMainMenuUINavigationActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "ClickOnButton" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnClickOnButton(InputAction.CallbackContext context);
     }
 }

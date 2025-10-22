@@ -276,7 +276,6 @@ namespace JA {
 
             if (currentLockOnTarget != null)
             {
-                Debug.Log("FENT");
                 cameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(cameraPivotTransform.transform.localPosition, newLockedPosition, ref velocity, Time.deltaTime);
             }
             else

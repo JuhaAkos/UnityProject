@@ -8,5 +8,7 @@ namespace JA
         [Header("Item Information")]
         public Sprite itemIcon;
         public string itemName;
+        //can be empty
+        public GameObject modelPrefab;        
     }
 }

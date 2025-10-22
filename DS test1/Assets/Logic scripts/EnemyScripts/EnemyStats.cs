@@ -4,18 +4,28 @@ namespace JA {
     public class EnemyStats : CharacterStats
     {
         Animator animator;
+        public BossHealthBar bossHealthbar;
 
         public void Awake()
         {
             animator = GetComponentInChildren<Animator>();
+            bossHealthbar = FindObjectOfType<BossHealthBar>();
         }
 
 
         void Start()
         {
-             Debug.Log("Enemy loaded 1");
+            //Debug.Log("Enemy loaded 1");
             maxHealth = SetMaxHealthFromHealthLevel();
-            currentHealth = maxHealth;            
+            currentHealth = maxHealth;
+            //Debug.Log("Bar: " + bossHealthbar);
+            bossHealthbar.SetBossMaxHealth(maxHealth);
+            bossHealthbar.DisableBossUI();
+        }
+        
+        public void enableBossUIFromStats()
+        {
+            bossHealthbar.EnableBossUI();
         }
 
         //health stats =/= health points
@@ -28,11 +38,15 @@ namespace JA {
 
         public void TakeDamage(int damage)
         {
+            bossHealthbar.EnableBossUI();
+
             if (isDead)
             {
                 return;
             }
-            currentHealth = currentHealth - damage;            
+            currentHealth = currentHealth - damage;
+
+            bossHealthbar.SetBossCurrentHealth(currentHealth);                  
 
             animator.Play("Damage_01");
 

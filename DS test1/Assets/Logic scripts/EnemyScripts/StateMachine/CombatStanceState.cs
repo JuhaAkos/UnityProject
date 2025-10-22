@@ -33,8 +33,6 @@ namespace JA
             {
                 return this;
             }
-
-            return this;
         }
 
         private void HandleRotateTowardsTarget(EnemyManager enemyManager)

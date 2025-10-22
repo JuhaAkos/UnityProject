@@ -15,6 +15,7 @@ namespace JA
 
         public WeaponItem[] weaponsInRightHandSlots = new WeaponItem[1];
         public WeaponItem[] weaponsInLeftHandSlots = new WeaponItem[1];
+        public EstusItem estusFlask;
 
         public int currentRightWeaponIndex = -1;
         public int currentLeftWeaponIndex = -1;
@@ -28,47 +29,24 @@ namespace JA
 
         private void Start()
         {
-            rightWeapon = unarmedWeapon;
-            leftWeapon = unarmedWeapon;
-            /*
-            rightWeapon = weaponsInRightHandSlots[currentRightWeaponIndex];
-            leftWeapon = weaponsInLeftHandSlots[currentLeftWeaponIndex];
+            rightWeapon = weaponsInRightHandSlots[0];
+            leftWeapon = unarmedWeapon;            
 
             weaponSlotManager.LoadWeaponOnSlot(rightWeapon, false);
-            weaponSlotManager.LoadWeaponOnSlot(leftWeapon, true);
-            */
+        }
+
+        public void SwitchToHealingItem()
+        {
+           weaponSlotManager.LoadWeaponOnSlot(estusFlask, false);
+        }
+        
+        public void SwitchBackFromHealingItem()
+        {
+            weaponSlotManager.LoadWeaponOnSlot(rightWeapon, false);
         }
 
         public void ChangeRightWeapon()
         {
-            /*
-            //Debug.Log("W.index START = " + currentRightWeaponIndex);
-
-            currentRightWeaponIndex = currentRightWeaponIndex + 1;
-
-            //Debug.Log("W.index = " + currentRightWeaponIndex);
-            //Debug.Log("W list length = " + weaponsInRightHandSlots.Length);
-
-            if (currentRightWeaponIndex == 0 && weaponsInRightHandSlots[0] != null)
-            {
-                rightWeapon = weaponsInRightHandSlots[currentRightWeaponIndex];
-                weaponSlotManager.LoadWeaponOnSlot(weaponsInRightHandSlots[currentRightWeaponIndex], false);
-            }
-            else if (currentRightWeaponIndex == 0 && weaponsInRightHandSlots[0] == null)
-            {
-                currentRightWeaponIndex = currentRightWeaponIndex + 1;
-            }
-            else if (currentRightWeaponIndex == 1 && weaponsInRightHandSlots[1] != null)
-            {
-                rightWeapon = weaponsInRightHandSlots[currentRightWeaponIndex];
-                weaponSlotManager.LoadWeaponOnSlot(weaponsInRightHandSlots[currentRightWeaponIndex], false);
-            }
-            else if (currentRightWeaponIndex == 1 && weaponsInRightHandSlots[1] == null)
-            {
-                currentRightWeaponIndex = currentRightWeaponIndex + 1;
-            }
-            */
-
             currentRightWeaponIndex = currentRightWeaponIndex + 1;
 
             if (currentRightWeaponIndex > weaponsInRightHandSlots.Length - 1)

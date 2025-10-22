@@ -89,7 +89,6 @@ namespace JA {
                              
         }
 
-
         private void LateUpdate()
         {
             //reseting most flags
@@ -104,6 +103,7 @@ namespace JA {
             inputHandler.d_Pad_Right = false;
             inputHandler.a_Input = false;
             inputHandler.jump_Input = false;
+            inputHandler.g_Input = false;
 
             float delta = Time.deltaTime;
             if (cameraHandler != null)

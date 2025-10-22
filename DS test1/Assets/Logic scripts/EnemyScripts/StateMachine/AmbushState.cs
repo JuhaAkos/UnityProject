@@ -4,14 +4,20 @@ namespace JA
 {
     public class AmbushState : State
     {
+
         public bool isSleeping;
         public float detectionRadius = 2;
         public string wakeAnimation;
         public string sleepAnimation;
 
         public LayerMask detectionLayer;
-
         public PursueTargetState pursueTargetState;
+        public EnemyStats enemyStats;
+
+        private void Awake()
+        {
+            enemyStats = GetComponent<EnemyStats>();
+        }
 
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorHandler enemyAnimatorHandler)
         {
@@ -49,6 +55,7 @@ namespace JA
             
             if (enemyManager.currentTarget != null)
             {
+                enemyStats.enableBossUIFromStats();
                 return pursueTargetState;
             } else
             {

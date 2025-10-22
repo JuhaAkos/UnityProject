@@ -30,7 +30,7 @@ namespace JA {
 
         [Header("Movement Stats")]
         [SerializeField]
-        float movementSpeed = 5;
+        float movementSpeed = 3;
         [SerializeField]
         float sprintSpeed = 6;
         [SerializeField]

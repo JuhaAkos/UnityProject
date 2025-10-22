@@ -5,7 +5,7 @@ namespace JA
     [CreateAssetMenu(menuName = "Items/Weapon Item")]
     public class WeaponItem : Item
     {
-        public GameObject modelPrefab;
+        
         public bool isUnarmed;
 
         [Header("Idle Animations")]

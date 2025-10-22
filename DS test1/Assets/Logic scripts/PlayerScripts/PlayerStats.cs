@@ -8,9 +8,13 @@ namespace JA {
 
         public float staminaRegenerationAmount = 6;
         public float staminaRegenTimer = 0;
+        public int estusCount = 3;
 
         AnimatorHandler animatorHandler;
         PlayerManager playerManager;
+        EstusUICounter estusUICounter;
+        DeathScreen deathScreen;
+        public EstusItem estusItem;
 
         public void Awake()
         {
@@ -18,6 +22,9 @@ namespace JA {
             healthbar = FindObjectOfType<HealthBar>();
             staminabar = FindObjectOfType<StaminaBar>();
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
+
+            estusUICounter = FindObjectOfType<EstusUICounter>();
+            deathScreen = FindObjectOfType<DeathScreen>();
         }
 
 
@@ -30,6 +37,8 @@ namespace JA {
             maxStamina = SetMaxStaminaFromStaminaLevel();
             currentStamina = maxStamina;
             staminabar.SetMaxStamina(maxStamina);
+
+            estusUICounter.ChangeEstusCounterText(estusCount);
         }
 
         //health stats =/= health points
@@ -69,7 +78,10 @@ namespace JA {
                 //no transition connected to locomotion so won't reset state
                 animatorHandler.PlayTargetAnimation("Dead_01", true);
 
-                isDead = true;              
+                isDead = true;
+
+                //later call from anim event
+                deathScreen.DeathScreenFadeIn();
             }
         }
 
@@ -84,7 +96,9 @@ namespace JA {
             if (playerManager.isInteracting)
             {
                 staminaRegenTimer = 0;
-            } else {
+            }
+            else
+            {
                 staminaRegenTimer += Time.deltaTime;
                 //+1sec delay
                 if (currentStamina < maxStamina && staminaRegenTimer > 2f)
@@ -92,7 +106,35 @@ namespace JA {
                     currentStamina += staminaRegenerationAmount * Time.deltaTime;
                     staminabar.SetCurrentStamina(Mathf.RoundToInt(currentStamina));
                 }
-            }            
+            }
+        }
+    
+        public void UseEstus()
+        {
+            if (estusCount < 1)
+            {
+                return;
+            }
+            if (playerManager.isInteracting)
+            {
+                return;
+            }
+
+            estusCount -= 1;
+            //CALL PLAYERINV.SwitchToHealingItem() based on anim event
+            animatorHandler.PlayTargetAnimation("Heal", true);
+            if (currentHealth + estusItem.GetHealAmount() > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+            else
+            {
+                currentHealth = currentHealth + estusItem.GetHealAmount();
+            }
+
+            healthbar.SetCurrentHealth(currentHealth);
+            estusUICounter.ChangeEstusCounterText(estusCount);
+            
         }
     }
 }

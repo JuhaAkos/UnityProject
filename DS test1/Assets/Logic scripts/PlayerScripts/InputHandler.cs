@@ -12,6 +12,7 @@ namespace JA
         public float mouseY;
 
         //input names based on controller inputs for now
+        public bool g_Input;
         public bool b_Input;
         public bool a_Input;
         public bool rb_Input;
@@ -73,6 +74,7 @@ namespace JA
                 inputActions.PlayerActions.RT.performed += i => rt_Input = true;
                 //interact
                 inputActions.PlayerActions.A.performed += i => a_Input = true;
+                inputActions.PlayerActions.Estus.performed += i => g_Input = true;
 
                 inputActions.PlayerActions.Roll.performed += i => b_Input = true;
                 inputActions.PlayerActions.Roll.canceled += inputActions => b_Input = false;
@@ -102,6 +104,7 @@ namespace JA
             //HandlerInteractingButtonInput();
             //HandleJumpInput();
             HandleLockOnInput();
+            HandleEstusInput();
         }
 
         //handlemovementinput
@@ -169,7 +172,7 @@ namespace JA
             //right light attack
             if (rb_Input)
             {
-                //Debug.Log(playerManager.canDoCombo);
+                Debug.Log("attacked");
                 if (playerManager.canDoCombo)
                 {
                     comboFlag = true;
@@ -272,6 +275,17 @@ namespace JA
             }
 
             cameraHandler.SetCameraHeight();
+        }
+    
+        private void HandleEstusInput()
+        {
+            //inevtory -> holderslot
+            //stats -> anim  
+            if (g_Input)
+            {
+                playerStats.UseEstus();
+            }
+                      
         }
     }
     

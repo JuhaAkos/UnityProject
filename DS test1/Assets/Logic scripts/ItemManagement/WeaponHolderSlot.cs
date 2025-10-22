@@ -18,6 +18,14 @@ namespace JA
             }
         }
 
+        public void ReloadWeapon()
+        {
+            if (currentWeaponModel != null)
+            {
+                currentWeaponModel.SetActive(true);
+            }
+        }
+        
         public void UnloadWeaponAndDestroy()
         {
             if (currentWeaponModel != null)
@@ -25,7 +33,7 @@ namespace JA
                 Destroy(currentWeaponModel);
             }
         }
-        public void LoadWeaponModel(WeaponItem weaponItem)
+        public void LoadWeaponModel(Item weaponItem)
         {
             UnloadWeaponAndDestroy();
 

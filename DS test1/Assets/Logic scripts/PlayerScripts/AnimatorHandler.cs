@@ -24,7 +24,7 @@ namespace JA {
             horizontal = Animator.StringToHash("Horizontal");
         }
 
-        //changes between animations
+        //changes between animations blendtree
         public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement, bool isSprinting)
         {
 

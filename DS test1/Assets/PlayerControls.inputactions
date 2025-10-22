@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "PlayerControls",
     "maps": [
         {
@@ -223,6 +224,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Estus",
+                    "type": "Button",
+                    "id": "ca30e2ee-9972-432b-bab7-63693ae279e6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -357,6 +367,17 @@
                     "action": "LockOn",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "37dc8cfb-373e-4f40-a317-37a93f6c09bc",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Estus",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -487,6 +508,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "D-Pad Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Main Menu UI Navigation",
+            "id": "2b78433a-a205-4cce-857e-504ebd7474f3",
+            "actions": [
+                {
+                    "name": "ClickOnButton",
+                    "type": "Button",
+                    "id": "7d740973-547a-4e39-bc16-a38ae1dfab11",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "28675f56-c46c-4a14-b2f5-c713b54f7d53",
+                    "path": "<Mouse>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClickOnButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
