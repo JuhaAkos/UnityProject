@@ -5,9 +5,14 @@ namespace JA
     public class PursueTargetState : State
     {
         public CombatStanceState combatStanceState;
+        public DeadState deadState;
 
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorHandler enemyAnimatorHandler)
         {
+            if (enemyStats.isDead)
+            {
+                return deadState;
+            }
             if (enemyManager.isPerformingAction)
             {
                 enemyAnimatorHandler.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);

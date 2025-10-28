@@ -4,6 +4,7 @@ namespace JA {
     public class IdleState : State
     {
         public PursueTargetState pursueTargetState;
+        public DeadState deadState;       
         public LayerMask detectionLayer;  
 
        private void Awake()
@@ -15,6 +16,10 @@ namespace JA {
 
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorHandler enemyAnimatorHandler)
         {
+            if (enemyStats.isDead)
+            {
+                return deadState;
+            }
             #region detect target
             Collider[] colliders = Physics.OverlapSphere(transform.position, enemyManager.detectionRadius, detectionLayer);
 

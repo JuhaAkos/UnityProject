@@ -5,10 +5,15 @@ namespace JA
     public class CombatStanceState : State
     {
         public AttackState attackState;
+        public DeadState deadState;
         public PursueTargetState pursueTargetState;
 
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorHandler enemyAnimatorHandler)
         {
+            if (enemyStats.isDead)
+            {
+                return deadState;
+            }
             //check attack range
             //chance to circle or walk around target
             //ready to attack -> switch

@@ -5,12 +5,18 @@ namespace JA
     public class AttackState : State
     {
         public CombatStanceState combatStanceState;
+        public DeadState deadState;
 
         public EnemyAttackAction[] enemyAttacks;
         public EnemyAttackAction currentAttack;
 
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorHandler enemyAnimatorHandler)
         {
+            if (enemyStats.isDead)
+            {
+                return deadState;
+            }
+
             Vector3 targetDirection = enemyManager.currentTarget.transform.position - transform.position;
             float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
             float viewableAngle = Vector3.Angle(targetDirection, transform.forward);

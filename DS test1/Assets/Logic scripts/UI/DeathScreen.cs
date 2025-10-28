@@ -2,43 +2,74 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class DeathScreen : MonoBehaviour
-{
-    float fadeSpeed = 0.2f;
-    public CanvasGroup deathScreen;
-    private bool fadeInActive;
-    private bool yetToExit;
-    private float timingDelay = 0f;
-
-
-    //CALL FROM DEATH ANIMATION KEY EVENT
-    public void DeathScreenFadeIn()
+namespace JA { 
+    public class DeathScreen : MonoBehaviour
     {
-        fadeInActive = true;
-    }
+        public CanvasGroup deathScreen;
+        public CanvasGroup fadeInScreen;
+        private bool fadeInActive;
+        private bool yetToExit;
+        private float timingDelay = 0f;
+        private bool isLoadedIn = false;
+        private float fadeInDelay = 0f;
 
 
-    public void ReturnToMainMenu()
-    {
-
-    }
-    
-    private void Update()
-    {
-
-        if (deathScreen.alpha < 1 && fadeInActive)
+        //CALL FROM DEATH ANIMATION KEY EVENT
+        public void DeathScreenFadeIn()
         {
-            deathScreen.alpha += (Time.deltaTime / 2);         
+            fadeInActive = true;
         }
 
-        if (timingDelay < 3 && fadeInActive)
+
+        public void ReturnToMainMenu()
         {
-            timingDelay += (Time.deltaTime / 2);
+
         }
-        
-        if (timingDelay >= 3) {
-            fadeInActive = false;
-            SceneManager.LoadScene("MainMenu");
+
+        private void Start()
+        {
+            fadeInScreen.alpha = 1;
+        }
+
+        private void Update()
+        {
+            if (isLoadedIn)
+            {
+                if (deathScreen.alpha < 1 && fadeInActive)
+                {
+                    deathScreen.alpha += (Time.deltaTime / 2);
+                }
+
+                if (timingDelay < 3 && fadeInActive)
+                {
+                    timingDelay += (Time.deltaTime / 2);
+                }
+
+                if (timingDelay >= 3)
+                {
+                    fadeInActive = false;
+                    SceneManager.LoadScene("MainMenu");
+                }
+            }
+            else
+            {
+                if (fadeInDelay > 0.1)
+                {
+                    fadeInScreen.alpha -= (Time.deltaTime / 3);
+
+                    if (fadeInScreen.alpha == 0)
+                    {
+                        isLoadedIn = true;
+                    }
+                }
+                else
+                {
+                    fadeInDelay += (Time.deltaTime / 3);
+                }
+
+            }
+
+
         }
     }
 }

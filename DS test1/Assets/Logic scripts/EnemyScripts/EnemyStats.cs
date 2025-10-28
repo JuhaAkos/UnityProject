@@ -52,6 +52,7 @@ namespace JA {
 
             if (currentHealth <= 0)
             {
+                Debug.Log("Enemy defeated!");
                 currentHealth = 0;
                 //no transition connected to locomotion so won't reset state
                 animator.Play("Dead_01");

@@ -12,6 +12,7 @@ namespace JA
 
         public LayerMask detectionLayer;
         public PursueTargetState pursueTargetState;
+        public DeadState deadState;
         public EnemyStats enemyStats;
 
         private void Awake()
@@ -21,6 +22,11 @@ namespace JA
 
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorHandler enemyAnimatorHandler)
         {
+            if (enemyStats.isDead)
+            {
+                return deadState;
+            }
+
             if (isSleeping && enemyManager.isInteracting == false)
             {
                 enemyAnimatorHandler.PlayTargetAnimation(sleepAnimation, true);
