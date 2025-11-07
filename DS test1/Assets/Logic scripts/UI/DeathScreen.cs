@@ -37,7 +37,7 @@ namespace JA {
             {
                 if (deathScreen.alpha < 1 && fadeInActive)
                 {
-                    deathScreen.alpha += (Time.deltaTime / 2);
+                    deathScreen.alpha += (Time.deltaTime / 4);
                 }
 
                 if (timingDelay < 3 && fadeInActive)

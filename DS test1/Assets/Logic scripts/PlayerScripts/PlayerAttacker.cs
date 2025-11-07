@@ -25,16 +25,22 @@ namespace JA
                 return;
             }
 
-            Debug.Log("Tried to combo");
             if (inputHandler.comboFlag)
             {
                 animatorHandler.anim.SetBool("canDoCombo", false);
                 if (lastAttack == weapon.OH_Light_Attack_1)
                 {
-                    Debug.Log("Actually comboed");
+                    Debug.Log("STAGE 1: "  + lastAttack);
                     animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_2, true);
+                    lastAttack = weapon.OH_Light_Attack_2;
+                } else if (lastAttack == weapon.OH_Light_Attack_2)
+                {
+                    Debug.Log("STAGE 2: " + lastAttack);
+                    animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_3, true);
+                    lastAttack = weapon.OH_Light_Attack_3;
                 }
             }     
+
         }
 
         public void HandleLightAttack(WeaponItem weapon)

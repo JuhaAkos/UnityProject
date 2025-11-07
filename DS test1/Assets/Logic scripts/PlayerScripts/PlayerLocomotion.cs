@@ -41,7 +41,7 @@ namespace JA {
         //seri used instead of public for inspector
         [Header("Stamina Costs")]
         [SerializeField]
-        int rollStaminaCost = 15;
+        int rollStaminaCost = 6;
         int backstepStaminaCost = 12;
         int sprintStaminaCost = 1;
 

@@ -11,7 +11,8 @@ public class PillarPlacement : MonoBehaviour
 
     private void Start()
     {
-        CreatePillarsAroundPoint(12, centerPoint.transform.position, 27.2f);
+        //CreatePillarsAroundPoint(12, centerPoint.transform.position, 27.2f);
+        CreatePillarsAroundPoint(12, centerPoint.transform.position, 27f);
         navSurface.BuildNavMesh();
     }
 

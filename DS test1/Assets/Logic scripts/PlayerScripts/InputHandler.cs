@@ -172,7 +172,6 @@ namespace JA
             //right light attack
             if (rb_Input)
             {
-                Debug.Log("attacked");
                 if (playerManager.canDoCombo)
                 {
                     comboFlag = true;

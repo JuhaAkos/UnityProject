@@ -6,7 +6,7 @@ namespace JA {
         public HealthBar healthbar;
         public StaminaBar staminabar;
 
-        public float staminaRegenerationAmount = 6;
+        public float staminaRegenerationAmount = 12;
         public float staminaRegenTimer = 0;
         public int estusCount = 3;
 
@@ -101,7 +101,7 @@ namespace JA {
             {
                 staminaRegenTimer += Time.deltaTime;
                 //+1sec delay
-                if (currentStamina < maxStamina && staminaRegenTimer > 2f)
+                if (currentStamina < maxStamina && staminaRegenTimer > 1.5f)
                 {
                     currentStamina += staminaRegenerationAmount * Time.deltaTime;
                     staminabar.SetCurrentStamina(Mathf.RoundToInt(currentStamina));
