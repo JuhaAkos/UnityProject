@@ -4,13 +4,14 @@ namespace JA {
     public class PlayerLocomotion : MonoBehaviour
     {
         Transform cameraObject;
-        InputHandler inputHandler;      
+        InputHandler inputHandler;
         [HideInInspector]
         public Transform myTransform;
         [HideInInspector]
         public AnimatorHandler animatorHandler;
         PlayerManager playerManager;
         PlayerStats playerStats;
+        public CameraHandler cameraHandler;
 
         public Vector3 moveDirection; //which way we are facing
         //public for fall movement
@@ -49,12 +50,13 @@ namespace JA {
         public CapsuleCollider characterCollisionBlockerCollider;
 
         private void Awake()
-        {            
+        {
             playerManager = GetComponentInParent<PlayerManager>();
             playerStats = GetComponent<PlayerStats>();
             rigidbody = GetComponent<Rigidbody>();
             inputHandler = GetComponent<InputHandler>();
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
+            cameraHandler = FindObjectOfType<CameraHandler>();
         }
 
         void Start()
@@ -157,23 +159,23 @@ namespace JA {
             //give the model the velocity we calculated
             rigidbody.linearVelocity = projectedVelocity;
 
-            
+
             //LOCKON
-            if (inputHandler.lockOnFlag && inputHandler.sprintFlag==false)
+            if (inputHandler.lockOnFlag && inputHandler.sprintFlag == false)
             {
                 //blendtree with both horizontal and vertical values
                 animatorHandler.UpdateAnimatorValues(inputHandler.vertical, inputHandler.horizontal, playerManager.isSprinting);
             }
             else
-            {                
+            {
                 animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
             }
-             
+
 
             //to change between the player models animation files (standing -> walking)
             //Debug.Log(inputHandler.moveAmount);
             //0 -> that is for horizontal
-            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);     
+            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
 
             if (animatorHandler.canRotate)
             {
@@ -182,15 +184,15 @@ namespace JA {
         }
 
         public void HandleRollingAndSprinting(float delta)
-        {            
+        {
             if (animatorHandler.anim.GetBool("isInteracting"))
                 return;
 
-            if(playerStats.currentStamina <= 0)
+            if (playerStats.currentStamina <= 0)
             {
                 return;
             }
-            
+
 
             if (inputHandler.rollFlag)
             {
@@ -199,7 +201,7 @@ namespace JA {
 
                 if (inputHandler.moveAmount > 0)
                 {
-                    Debug.Log("rolling rolling rolling...");
+                    //Debug.Log("rolling rolling rolling...");
                     animatorHandler.PlayTargetAnimation("Rolling", true);
                     moveDirection.y = 0;
                     //roll to move direction
@@ -209,7 +211,7 @@ namespace JA {
                 }
                 else
                 {
-                    Debug.Log("tried to take a step back...");
+                    //Debug.Log("tried to take a step back...");
                     animatorHandler.PlayTargetAnimation("Backstep", true);
                     playerStats.TakeStaminaDamage(backstepStaminaCost);
                 }
@@ -310,7 +312,7 @@ namespace JA {
                 return;
             }
 
-            if(playerStats.currentStamina <= 0)
+            if (playerStats.currentStamina <= 0)
             {
                 return;
             }
@@ -327,6 +329,19 @@ namespace JA {
                     myTransform.rotation = jumpRotation;
                 }
             }
+        }
+
+        public void LockOnRotation()
+        {
+            Vector3 dir = cameraHandler.currentLockOnTarget.position - myTransform.position;
+            //Debug.Log("a: " + myTransform.rotation + " b: " + cameraHandler.currentLockOnTarget.rotation + " c: " + rotationSpeed);
+            //Quaternion targetRotation = Quaternion.Slerp(myTransform.rotation, cameraHandler.currentLockOnTarget.rotation, rotationSpeed / Time.deltaTime);
+
+            Quaternion targetRotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(dir), rotationSpeed / Time.deltaTime);
+            targetRotation.x = 0;
+            targetRotation.z = 0;
+
+            myTransform.rotation = targetRotation;
         }
 
     }

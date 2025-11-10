@@ -5,6 +5,7 @@ namespace JA
     public class PlayerAttacker : MonoBehaviour
     {
         AnimatorHandler animatorHandler;
+        PlayerLocomotion playerLocomotion;
         InputHandler inputHandler;
         WeaponSlotManager weaponSlotManager;
         PlayerStats playerStats;
@@ -16,6 +17,7 @@ namespace JA
             playerStats = GetComponent<PlayerStats>();
             inputHandler = GetComponent<InputHandler>();
             weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
+            playerLocomotion = GetComponent<PlayerLocomotion>();
         }
 
         public void HandleWeaponCombo(WeaponItem weapon)
@@ -30,12 +32,12 @@ namespace JA
                 animatorHandler.anim.SetBool("canDoCombo", false);
                 if (lastAttack == weapon.OH_Light_Attack_1)
                 {
-                    Debug.Log("STAGE 1: "  + lastAttack);
+                    //Debug.Log("STAGE 1: "  + lastAttack);
                     animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_2, true);
                     lastAttack = weapon.OH_Light_Attack_2;
                 } else if (lastAttack == weapon.OH_Light_Attack_2)
                 {
-                    Debug.Log("STAGE 2: " + lastAttack);
+                    //Debug.Log("STAGE 2: " + lastAttack);
                     animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_3, true);
                     lastAttack = weapon.OH_Light_Attack_3;
                 }
@@ -49,11 +51,17 @@ namespace JA
             {
                 return;
             }
-            
+
+            if (inputHandler.lockOnFlag)
+            {
+                playerLocomotion.LockOnRotation();
+                
+            } 
+
             weaponSlotManager.attackingWeapon = weapon;
             animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_1, true);
             lastAttack = weapon.OH_Light_Attack_1;
-            //Debug.Log("Attacked - " + lastAttack);
+            
         }
 
         public void HandleHeavyAttack(WeaponItem weapon)

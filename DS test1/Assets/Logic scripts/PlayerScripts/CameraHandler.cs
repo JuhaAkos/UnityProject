@@ -244,14 +244,14 @@ namespace JA {
 
                     if (relativeEnemyPosition.x > 0.00f && distanceFromLeftTarget < shortestDistanceOfLeftTarget)
                     {
-                        Debug.Log("found better on left");
+                        //Debug.Log("found better on left");
                         shortestDistanceOfLeftTarget = distanceFromLeftTarget;
                         leftLockTarget = availableTargets[k].lockOnTransform;
                     }
 
                     if (relativeEnemyPosition.x < 0.00f && distanceFromRightTarget < shortestDistanceOfRightTarget)
                     {
-                        Debug.Log("found better on right");
+                        //Debug.Log("found better on right");
                         shortestDistanceOfRightTarget = distanceFromRightTarget;
                         rightLockTarget = availableTargets[k].lockOnTransform;
                     }

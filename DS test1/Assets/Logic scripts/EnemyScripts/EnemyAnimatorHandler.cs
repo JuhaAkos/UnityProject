@@ -9,7 +9,6 @@ namespace JA
         private void Awake()
         {
             anim = GetComponent<Animator>();
-            Debug.Log("anim: " + anim);
             enemyManager = GetComponentInParent<EnemyManager>();
         }
 

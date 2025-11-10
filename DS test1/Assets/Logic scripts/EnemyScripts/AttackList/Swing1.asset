@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d2078093c2b6ab4689c898d6fb37e02, type: 3}
   m_Name: Swing1
   m_EditorClassIdentifier: Assembly-CSharp::JA.EnemyAttackAction
-  actionAnimation: Boss_swing1_001
-  attackScore: 3
-  recoveryTime: 2
+  actionAnimation: Boss_swing1
+  attackScore: 10
+  recoveryTime: 3
   maximumAttackAngle: 35
-  minimumAttackAngle: -35
+  minimumAttackAngle: 325
   minimumDistanceNeededToAttack: 0
   maximumDistanceNeededToAttack: 3

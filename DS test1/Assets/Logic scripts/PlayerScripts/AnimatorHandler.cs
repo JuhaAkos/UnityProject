@@ -115,25 +115,25 @@ namespace JA {
             if (anim == null)
             {
                 anim = GetComponent<Animator>();
-                Debug.Log("missing animator");
+                //Debug.Log("missing animator");
             }
 
             if (inputHandler == null)
             {
                 inputHandler = GetComponentInParent<InputHandler>();
-                Debug.Log("missing handler");
+                //Debug.Log("missing handler");
             }
 
             if (playerLocomotion == null)
             {
                 playerLocomotion = GetComponentInParent<PlayerLocomotion>();
-                Debug.Log("missing locomotion");
+                //Debug.Log("missing locomotion");
             }
 
             if (playerManager == null)
             {
                 playerManager = GetComponentInParent<PlayerManager>();
-                Debug.Log("missing Pmanager");
+                //Debug.Log("missing Pmanager");
             }
 
             //Debug.Log("Isint: " + playerManager.isInteracting==null);

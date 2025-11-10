@@ -21,7 +21,10 @@ namespace JA
 
             Vector3 targetDirection = enemyManager.currentTarget.transform.position - enemyManager.transform.position;
             float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
+            //Debug.Log("dist: " + distanceFromTarget);
             float viewableAngle = Vector3.Angle(targetDirection, enemyManager.transform.forward);
+
+            HandleRotateTowardsTarget(enemyManager);
 
             if (distanceFromTarget > enemyManager.maximumAttackRange)
             {
@@ -41,7 +44,7 @@ namespace JA
                 */
             }
 
-            HandleRotateTowardsTarget(enemyManager);
+            
 
             enemyManager.navmeshAgent.transform.localPosition = Vector3.zero;
             enemyManager.navmeshAgent.transform.localRotation = Quaternion.identity;
@@ -82,21 +85,22 @@ namespace JA
 
                 float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
 
-                if (distanceFromTarget > enemyManager.maximumAttackRange)
+                //minus needed for change to comatstance
+                if (distanceFromTarget > enemyManager.maximumAttackRange - 1)
                 {
-                    
+
                     Vector3 direction = enemyManager.currentTarget.transform.position - transform.position;
 
                     direction.Normalize();
                     direction.y = 0;
-                    float speed = 3;
+                    float speed = 4f;
 
                     direction *= speed;
 
                     Vector3 projectedVelocity = Vector3.ProjectOnPlane(direction, Vector3.up);
 
-                    Vector3 targetVelocity = projectedVelocity; // Everything in the IF statement from this line and above this line is new
-                    
+                    Vector3 targetVelocity = projectedVelocity; // Everything in the IF statement from this line and above this line is new                   
+
                     //Vector3 targetVelocity = enemyManager.enemyRigidBody.linearVelocity;
 
                     enemyManager.navmeshAgent.enabled = true;
@@ -105,6 +109,16 @@ namespace JA
                     //ENEMYMANAGER.transform!!!
                     enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.navmeshAgent.transform.rotation, enemyManager.rotationSpeed / Time.deltaTime);
 
+                }
+                else if (distanceFromTarget < enemyManager.maximumAttackRange)
+                {
+                    Vector3 targetVelocity = enemyManager.enemyRigidBody.linearVelocity;
+
+                    enemyManager.navmeshAgent.enabled = true;
+                    enemyManager.navmeshAgent.SetDestination(enemyManager.currentTarget.transform.position);
+                    enemyManager.enemyRigidBody.linearVelocity = targetVelocity;
+                    //ENEMYMANAGER.transform!!!
+                    enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.navmeshAgent.transform.rotation, enemyManager.rotationSpeed / Time.deltaTime);
                 }
             }
         }

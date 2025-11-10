@@ -14,7 +14,7 @@ public class EstusUICounter : MonoBehaviour
         
     public void ChangeEstusCounterText(int EstusCount)
     {
-        Debug.Log("ezitt: " + counterText);
+        //Debug.Log("ezitt: " + counterText);
         counterText.text = EstusCount.ToString();
     }
 }

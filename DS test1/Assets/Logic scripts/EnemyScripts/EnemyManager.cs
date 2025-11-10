@@ -13,9 +13,8 @@ namespace JA {
         public CharacterStats currentTarget;
         public bool isPerformingAction;
         public bool isInteracting;       
-
         public float rotationSpeed = 25;
-        public float maximumAttackRange = 1.5f;
+        public float maximumAttackRange = 3.5f;
 
         /*
         public EnemyAttackAction[] enemyAttacks;
@@ -31,6 +30,11 @@ namespace JA {
         public float currentRecoveryTime = 0;
 
         public Rigidbody enemyRigidBody;
+
+        public bool isOnAttackTimeOut;
+        public bool timeOutStarted;
+        public float attackTimeOutTimer = 0;
+
 
         private void Awake()
         {
@@ -52,6 +56,9 @@ namespace JA {
         private void Update()
         {
             HandleRecoveryTime();
+            StartTimeOut();
+            HandleTimeOutTime();
+
 
             isInteracting = enemyAnimatorHandler.anim.GetBool("isInteracting");
         }
@@ -91,6 +98,33 @@ namespace JA {
                 if (currentRecoveryTime <= 0)
                 {
                     isPerformingAction = false;
+                }
+            }
+        }
+
+        private void StartTimeOut()
+        {
+            if (timeOutStarted && attackTimeOutTimer <= 0)
+            {
+                attackTimeOutTimer = Random.Range(1, 4);
+                isOnAttackTimeOut = true;
+                timeOutStarted = false;
+                Debug.Log("On timeout for: " + attackTimeOutTimer); 
+            }         
+        }
+
+        private void HandleTimeOutTime()
+        {
+            if (attackTimeOutTimer > 0)
+            {
+                attackTimeOutTimer -= Time.deltaTime;
+            }
+
+            if (isOnAttackTimeOut)
+            {
+                if (attackTimeOutTimer <= 0)
+                {
+                    isOnAttackTimeOut = false;
                 }
             }
         }

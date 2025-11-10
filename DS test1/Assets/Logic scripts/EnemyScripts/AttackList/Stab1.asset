@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Stab1
   m_EditorClassIdentifier: Assembly-CSharp::JA.EnemyAttackAction
   actionAnimation: Boss_stab1
-  attackScore: 3
+  attackScore: 10
   recoveryTime: 2
   maximumAttackAngle: 10
-  minimumAttackAngle: -10
+  minimumAttackAngle: 350
   minimumDistanceNeededToAttack: 0
   maximumDistanceNeededToAttack: 3

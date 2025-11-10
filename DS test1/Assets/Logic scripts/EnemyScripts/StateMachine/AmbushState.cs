@@ -6,7 +6,7 @@ namespace JA
     {
 
         public bool isSleeping;
-        public float detectionRadius = 2;
+        float detectionRadius = 10;
         public string wakeAnimation;
         public string sleepAnimation;
 
@@ -14,10 +14,18 @@ namespace JA
         public PursueTargetState pursueTargetState;
         public DeadState deadState;
         public EnemyStats enemyStats;
+        public CharacterStats charactersStats;
+
+        public Vector3 here;
 
         private void Awake()
         {
             enemyStats = GetComponent<EnemyStats>();
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(here, detectionRadius);
         }
 
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorHandler enemyAnimatorHandler)
@@ -35,10 +43,11 @@ namespace JA
             #region target detection
 
             Collider[] colliders = Physics.OverlapSphere(enemyManager.transform.position, detectionRadius, detectionLayer);
+            here = enemyManager.transform.position;
 
             for (int i = 0; i < colliders.Length; i++)
             {
-                CharacterStats charactersStats = colliders[i].transform.GetComponent<CharacterStats>();
+                charactersStats = colliders[i].transform.GetComponent<CharacterStats>();
 
                 if (charactersStats != null)
                 {

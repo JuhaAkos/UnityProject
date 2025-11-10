@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d2078093c2b6ab4689c898d6fb37e02, type: 3}
-  m_Name: Swing2
+  m_Name: RightSwing
   m_EditorClassIdentifier: Assembly-CSharp::JA.EnemyAttackAction
-  actionAnimation: Boss_swing2
-  attackScore: 1
-  recoveryTime: 7
-  maximumAttackAngle: 320
-  minimumAttackAngle: 40
+  actionAnimation: Boss_sideSwing_right
+  attackScore: 15
+  recoveryTime: 2
+  maximumAttackAngle: 180
+  minimumAttackAngle: 50
   minimumDistanceNeededToAttack: 0
   maximumDistanceNeededToAttack: 3

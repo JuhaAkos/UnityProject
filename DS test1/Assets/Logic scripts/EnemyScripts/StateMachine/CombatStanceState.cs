@@ -14,37 +14,53 @@ namespace JA
             {
                 return deadState;
             }
+
+            if (enemyManager.isPerformingAction)
+            {
+                enemyAnimatorHandler.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
+                //Debug.Log("returned");
+                return this;
+            }
             //check attack range
             //chance to circle or walk around target
             //ready to attack -> switch
             float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
 
-            HandleRotateTowardsTarget(enemyManager);
+            enemyManager.navmeshAgent.transform.localPosition = Vector3.zero;
 
+            //HandleRotateTowardsTarget(enemyManager);
+            /*
             if (enemyManager.isPerformingAction)
             {
-                enemyAnimatorHandler.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
+                //enemyAnimatorHandler.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
+                return this;
             }
+            */
 
+            //Debug.Log("dist: " + distanceFromTarget + " ,max dist: " + enemyManager.maximumAttackRange);
             if (enemyManager.currentRecoveryTime <= 0 && distanceFromTarget <= enemyManager.maximumAttackRange)
             {
                 return attackState;
             }
-            else if (distanceFromTarget > enemyManager.maximumAttackRange)
+            else if (distanceFromTarget > enemyManager.maximumAttackRange && !enemyManager.isPerformingAction)
             {
                 return pursueTargetState;
             }
             else
             {
+                //HandleRotateTowardsTarget(enemyManager);
                 return this;
             }
         }
 
         private void HandleRotateTowardsTarget(EnemyManager enemyManager)
         {
+
             //manual rotate
             if (enemyManager.isPerformingAction)
             {
+
+                //Debug.Log("isperforming");
                 Vector3 direction = enemyManager.currentTarget.transform.position - transform.position;
                 direction.y = 0;
                 direction.Normalize();
@@ -56,15 +72,19 @@ namespace JA
 
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
                 enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed / Time.deltaTime);
+
+
             }
             //navmash rotate if no action
             else
             {
+                
                 Vector3 relativeDirection = transform.InverseTransformDirection(enemyManager.navmeshAgent.desiredVelocity);
 
                 float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
                 //if (distanceFromTarget > enemyManager.maximumAttackRange)
                 {
+                    //Debug.Log("not performing");
                     /*
                     Vector3 direction = enemyManager.currentTarget.transform.position - transform.position;
 
@@ -88,7 +108,9 @@ namespace JA
                     enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.navmeshAgent.transform.rotation, enemyManager.rotationSpeed / Time.deltaTime);
 
                 }
+                
             }
+            
         }
     }
 }

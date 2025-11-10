@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Stomp
   m_EditorClassIdentifier: Assembly-CSharp::JA.EnemyAttackAction
   actionAnimation: Boss_Stomp1
-  attackScore: 3
-  recoveryTime: 2
+  attackScore: 10
+  recoveryTime: 3
   maximumAttackAngle: 20
-  minimumAttackAngle: -90
+  minimumAttackAngle: 270
   minimumDistanceNeededToAttack: 0
   maximumDistanceNeededToAttack: 3

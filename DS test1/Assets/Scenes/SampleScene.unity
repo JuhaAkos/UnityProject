@@ -2158,11 +2158,13 @@ MonoBehaviour:
   combatStanceState: {fileID: 1507258983}
   deadState: {fileID: 1965796645}
   enemyAttacks:
-  - {fileID: 11400000, guid: b337fb65d482dc142923003bc5272789, type: 2}
   - {fileID: 11400000, guid: 2c510120cae54144c90dd0b67369c637, type: 2}
   - {fileID: 11400000, guid: d69d2f7e13ae5c44184da57a38acd5f8, type: 2}
-  - {fileID: 11400000, guid: ad7035d8f483787429f78750f44d68cd, type: 2}
   - {fileID: 11400000, guid: 458bd259a12b7524787cfd4caf59b985, type: 2}
+  - {fileID: 11400000, guid: 3b1eb008bc9d68c42ad60fdc65768abd, type: 2}
+  - {fileID: 11400000, guid: 3fca4a80c2b224a45920e50f4e9bc5df, type: 2}
+  - {fileID: 11400000, guid: b337fb65d482dc142923003bc5272789, type: 2}
+  - {fileID: 11400000, guid: ad7035d8f483787429f78750f44d68cd, type: 2}
   - {fileID: 11400000, guid: 39328f122c6df79499a267e08579683b, type: 2}
   currentAttack: {fileID: 0}
 --- !u!1 &460414271
@@ -4408,12 +4410,12 @@ NavMeshAgent:
   m_GameObject: {fileID: 877471255}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Radius: 0.3
+  m_Speed: 4
+  m_Acceleration: 5
   avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 1
+  m_AngularSpeed: 200
+  m_StoppingDistance: 0.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -4497,6 +4499,8 @@ MonoBehaviour:
   pursueTargetState: {fileID: 640579097}
   deadState: {fileID: 1965796645}
   enemyStats: {fileID: 0}
+  charactersStats: {fileID: 0}
+  here: {x: 0, y: 0, z: 0}
 --- !u!4 &938038292
 Transform:
   m_ObjectHideFlags: 0
@@ -9907,7 +9911,7 @@ Transform:
   m_GameObject: {fileID: 1154384377}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.44, y: 0.33, z: -6.24}
+  m_LocalPosition: {x: -0.44, y: 0.33, z: -18.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9980,13 +9984,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myTransform: {fileID: 0}
   animatorHandler: {fileID: 0}
+  cameraHandler: {fileID: 0}
   moveDirection: {x: 0, y: 0, z: 0}
   rigidbody: {fileID: 0}
   groundDetectionRayStartPoint: 0.5
   minimumDistanceNeededToBeginFall: 1
   groundDirectionRayDistance: 0.2
   inAirTimer: 0
-  movementSpeed: 3
+  movementSpeed: 2.5
   sprintSpeed: 6
   rotationSpeed: 10
   fallingSpeed: 300
@@ -11874,7 +11879,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1481395834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13376,6 +13381,9 @@ MonoBehaviour:
   viewableAngle: 0
   currentRecoveryTime: 0
   enemyRigidBody: {fileID: 0}
+  isOnAttackTimeOut: 0
+  timeOutStarted: 0
+  attackTimeOutTimer: 0
 --- !u!1 &1780472195
 GameObject:
   m_ObjectHideFlags: 0
@@ -13820,13 +13828,16 @@ MonoBehaviour:
   isPerformingAction: 0
   isInteracting: 0
   rotationSpeed: 20
-  maximumAttackRange: 1.5
-  detectionRadius: 20
-  maximumDetectionAngle: 50
-  minimumDetectionAngle: -50
+  maximumAttackRange: 3
+  detectionRadius: 10
+  maximumDetectionAngle: 180
+  minimumDetectionAngle: -180
   viewableAngle: 0
   currentRecoveryTime: 0
   enemyRigidBody: {fileID: 0}
+  isOnAttackTimeOut: 0
+  timeOutStarted: 0
+  attackTimeOutTimer: 0
 --- !u!54 &1926401251
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -13906,7 +13917,7 @@ Transform:
   m_GameObject: {fileID: 1926401248}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 9.7}
   m_LocalScale: {x: 1.6, y: 1.6, z: 1.6}
   m_ConstrainProportionsScale: 0
   m_Children:

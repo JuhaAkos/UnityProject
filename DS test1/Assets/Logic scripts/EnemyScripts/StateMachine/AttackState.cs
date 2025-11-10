@@ -17,9 +17,21 @@ namespace JA
                 return deadState;
             }
 
+            enemyManager.navmeshAgent.transform.localPosition = Vector3.zero;
+
             Vector3 targetDirection = enemyManager.currentTarget.transform.position - transform.position;
             float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
-            float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
+            //float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
+            
+            float viewableAngle = Vector3.SignedAngle(transform.forward, targetDirection, Vector3.up);
+            if (viewableAngle < 0)
+            {
+                viewableAngle += 360;
+            }
+            
+
+            enemyAnimatorHandler.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
+            enemyAnimatorHandler.anim.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
 
             HandleRotateTowardsTarget(enemyManager);
 
@@ -28,9 +40,12 @@ namespace JA
                 return combatStanceState;
             }
 
-
+            //Debug.Log("angle " + viewableAngle);
+            //Debug.Log("NEW angle " + Vector3.SignedAngle(targetDirection, transform.forward, Vector3.up));
+            //Debug.Log("NEW angle " + Vector3.SignedAngle(transform.forward, targetDirection, Vector3.up));
             if (currentAttack != null)
             {
+                //Debug.Log("if ag");
                 //if too close for CURRENT ATTACK-> new attack
                 if (distanceFromTarget < currentAttack.minimumDistanceNeededToAttack)
                 {
@@ -38,24 +53,32 @@ namespace JA
                 }
                 else if (distanceFromTarget < currentAttack.maximumDistanceNeededToAttack)
                 {
-                    if (viewableAngle <= currentAttack.maximumAttackAngle &&
-                    viewableAngle >= currentAttack.minimumAttackAngle)
+
+                    if (currentAttack.maximumAttackAngle < currentAttack.minimumAttackAngle &&
+                        (viewableAngle >= currentAttack.minimumAttackAngle || viewableAngle <= currentAttack.maximumAttackAngle)
+                        || viewableAngle <= currentAttack.maximumAttackAngle && viewableAngle >= currentAttack.minimumAttackAngle
+                        )
                     {
-                        if (enemyManager.currentRecoveryTime <= 0 && enemyManager.isPerformingAction == false)
-                        {
-                            enemyAnimatorHandler.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
-                            enemyAnimatorHandler.anim.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
-                            enemyAnimatorHandler.PlayTargetAnimation(currentAttack.actionAnimation, true);
-                            enemyManager.isPerformingAction = true;
-                            enemyManager.currentRecoveryTime = currentAttack.recoveryTime;
-                            currentAttack = null;
-                            return combatStanceState;
-                        }
+                            if (enemyManager.currentRecoveryTime <= 0 && enemyManager.isPerformingAction == false)
+                            {
+                                enemyAnimatorHandler.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
+                                enemyAnimatorHandler.anim.SetFloat("Horizontal", 0, 0.1f, Time.deltaTime);
+                                //Debug.Log("start: " + currentAttack.minimumAttackAngle + " end: " + currentAttack.maximumAttackAngle);
+                                enemyAnimatorHandler.PlayTargetAnimation(currentAttack.actionAnimation, true);
+                                enemyManager.isPerformingAction = true;
+                                enemyManager.currentRecoveryTime = currentAttack.recoveryTime;
+                                currentAttack = null;
+                                return combatStanceState;
+                            }
                     }
                 }
+                currentAttack = null;
             }
-            else
-            {
+            else if (!enemyManager.isPerformingAction && !enemyManager.isOnAttackTimeOut)
+            {   
+                enemyManager.navmeshAgent.transform.localPosition = Vector3.zero;
+                //Debug.Log("performing: " + enemyManager.isPerformingAction);
+                //HandleRotateTowardsTarget(enemyManager);
                 GetNewAttack(enemyManager);
             }
 
@@ -73,10 +96,16 @@ namespace JA
         private void GetNewAttack(EnemyManager enemyManager)
         {
             Vector3 targetsDirection = enemyManager.currentTarget.transform.position - transform.position;
-            float viewableAngle = Vector3.Angle(targetsDirection, transform.forward);
+            //float viewableAngle = Vector3.Angle(targetsDirection, transform.forward);
+            float viewableAngle = Vector3.SignedAngle(transform.forward, targetsDirection, Vector3.up);
+            if (viewableAngle < 0)
+            {
+                viewableAngle += 360;
+            }
+
             float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, transform.position);
 
-            int maxScore = 0;
+            int maxScore = 5;
 
             for (int i = 0; i < enemyAttacks.Length; i++)
             {
@@ -85,11 +114,26 @@ namespace JA
                 if (distanceFromTarget <= enemyAttackAction.maximumDistanceNeededToAttack
                 && distanceFromTarget >= enemyAttackAction.minimumDistanceNeededToAttack)
                 {
-                    if (viewableAngle <= enemyAttackAction.maximumAttackAngle
-                    && viewableAngle >= enemyAttackAction.minimumAttackAngle)
+                    //check if attack is directional or frontal
+                    //frontal: 360 < x < 180...
+                    if (enemyAttackAction.maximumAttackAngle < enemyAttackAction.minimumAttackAngle)
                     {
-                        maxScore += enemyAttackAction.attackScore;
+                        if (viewableAngle >= enemyAttackAction.minimumAttackAngle ||
+                         viewableAngle <= enemyAttackAction.maximumAttackAngle)
+                        {
+                            maxScore += enemyAttackAction.attackScore;
+                        }
+                    //directional outcome
+                    //does not do a full circle
+                    } else
+                    {
+                        if (viewableAngle <= enemyAttackAction.maximumAttackAngle
+                        && viewableAngle >= enemyAttackAction.minimumAttackAngle)
+                        {
+                            maxScore += enemyAttackAction.attackScore;
+                        }
                     }
+                    
                 }
             }
 
@@ -103,30 +147,74 @@ namespace JA
                 if (distanceFromTarget <= enemyAttackAction.maximumDistanceNeededToAttack
                 && distanceFromTarget >= enemyAttackAction.minimumDistanceNeededToAttack)
                 {
-                    if (viewableAngle <= enemyAttackAction.maximumAttackAngle
-                    && viewableAngle >= enemyAttackAction.minimumAttackAngle)
+                    //non directional/frontal
+                    if (enemyAttackAction.maximumAttackAngle < enemyAttackAction.minimumAttackAngle)
                     {
-                        if (currentAttack != null)
+                        if (viewableAngle >= enemyAttackAction.minimumAttackAngle ||
+                         viewableAngle <= enemyAttackAction.maximumAttackAngle)
                         {
-                            return;
-                        }
+                            if (currentAttack != null)
+                            {
+                                HandleRotateTowardsTarget(enemyManager);
+                                return;
+                            }
 
-                        temporaryScore += enemyAttackAction.attackScore;
+                            temporaryScore += enemyAttackAction.attackScore;
 
-                        if (temporaryScore > randomValue)
-                        {
-                            currentAttack = enemyAttackAction;
+                            //Debug.Log("Temp score: " + temporaryScore + " vs maxScore: " + maxScore + " = " + randomValue);
+                            if (temporaryScore > randomValue)
+                            {
+                                currentAttack = enemyAttackAction;
+                            }
                         }
                     }
+                    //directional
+                    else
+                    {
+                        if (viewableAngle <= enemyAttackAction.maximumAttackAngle
+                        && viewableAngle >= enemyAttackAction.minimumAttackAngle)
+                        {
+                            if (currentAttack != null)
+                            {
+                                HandleRotateTowardsTarget(enemyManager);
+                                return;
+                            }
+
+                            temporaryScore += enemyAttackAction.attackScore;
+
+                            if (temporaryScore > randomValue)
+                            {
+                                currentAttack = enemyAttackAction;
+                            }
+                        }
+                    }
+
                 }
             }
+            
+            if (currentAttack == null)
+            {
+                //Debug.Log("Nem találtam!!!");
+                enemyManager.timeOutStarted = true;
+                HandleRotateTowardsTarget(enemyManager);
+                return;
+            }
+
         }
     
         private void HandleRotateTowardsTarget(EnemyManager enemyManager)
         {
+            enemyManager.navmeshAgent.transform.localPosition = Vector3.zero;
+
+            Vector3 targetDirection = enemyManager.currentTarget.transform.position - transform.position;
+            float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
+            float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
+
             //manual rotate
             if (enemyManager.isPerformingAction)
-            {
+            {    
+                /*
+                Debug.Log("Rotate: attack, isperforming");    
                 Vector3 direction = enemyManager.currentTarget.transform.position - transform.position;
                 direction.y = 0;
                 direction.Normalize();
@@ -138,13 +226,17 @@ namespace JA
 
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
                 enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed / Time.deltaTime);
+                */
+                
             }
+            
             //navmash rotate if no action
             else
             {
+                //Debug.Log("Rotate: attack, NO perform");   
                 Vector3 relativeDirection = transform.InverseTransformDirection(enemyManager.navmeshAgent.desiredVelocity);
 
-                float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
+                distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
                 //if (distanceFromTarget > enemyManager.maximumAttackRange)
                 {
                     /*
@@ -167,10 +259,12 @@ namespace JA
                     enemyManager.navmeshAgent.SetDestination(enemyManager.currentTarget.transform.position);
                     enemyManager.enemyRigidBody.linearVelocity = targetVelocity;
                     //ENEMYMANAGER.transform!!!
-                    enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.navmeshAgent.transform.rotation, enemyManager.rotationSpeed / Time.deltaTime);
+                    enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.navmeshAgent.transform.rotation, enemyManager.rotationSpeed / 10000 / Time.deltaTime);
+                    //Debug.Log("Slerp: " + enemyManager.rotationSpeed / 10000 / Time.deltaTime);
 
                 }
             }
+            
         }
     }
 }
