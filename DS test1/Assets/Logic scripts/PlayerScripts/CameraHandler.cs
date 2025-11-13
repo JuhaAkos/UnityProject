@@ -36,6 +36,7 @@ namespace JA {
         private float lookAngle; //left and right
         private float pivotAngle; //up and down
 
+        //PIVOT: up/down angle
         public float minimumPivot = -35;
         public float maximumPivot = 35;
 

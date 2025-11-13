@@ -3,11 +3,9 @@ using UnityEngine;
 namespace JA {
     public class DeadState : State
     {
-    
-       private void Awake()
-        {
-            //handled in inspector
-            //pursueTargetState = GetComponentInChildren<PursueTargetState>();            
+        
+        private void Awake()
+        {     
         } 
 
 

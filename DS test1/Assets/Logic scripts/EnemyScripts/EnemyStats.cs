@@ -5,11 +5,13 @@ namespace JA {
     {
         Animator animator;
         public BossHealthBar bossHealthbar;
+        VictoryScreen victoryScreen;        
 
         public void Awake()
         {
             animator = GetComponentInChildren<Animator>();
             bossHealthbar = FindObjectOfType<BossHealthBar>();
+            victoryScreen = FindObjectOfType<VictoryScreen>();
         }
 
 
@@ -48,7 +50,7 @@ namespace JA {
 
             bossHealthbar.SetBossCurrentHealth(currentHealth);                  
 
-            animator.Play("Damage_01");
+            animator.Play("Boss_takeDamage");
 
             if (currentHealth <= 0)
             {
@@ -57,7 +59,8 @@ namespace JA {
                 //no transition connected to locomotion so won't reset state
                 animator.Play("Dead_01");
                 //handler death  
-                isDead = true;              
+                isDead = true; 
+                victoryScreen.VictoryScreenFadeIn();             
             }
         }
     }

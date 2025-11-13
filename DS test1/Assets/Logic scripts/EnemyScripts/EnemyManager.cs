@@ -34,7 +34,8 @@ namespace JA {
         public bool isOnAttackTimeOut;
         public bool timeOutStarted;
         public float attackTimeOutTimer = 0;
-
+        public bool tooMuchTimeOut;
+        public float tooMuchTimeOutTimer = 0;
 
         private void Awake()
         {
@@ -104,17 +105,29 @@ namespace JA {
 
         private void StartTimeOut()
         {
-            if (timeOutStarted && attackTimeOutTimer <= 0)
+            if (timeOutStarted && attackTimeOutTimer <= 0 && tooMuchTimeOutTimer <= 0)
             {
+                tooMuchTimeOut = true;
                 attackTimeOutTimer = Random.Range(1, 4);
                 isOnAttackTimeOut = true;
-                timeOutStarted = false;
+                
                 Debug.Log("On timeout for: " + attackTimeOutTimer); 
-            }         
+            }   
+            timeOutStarted = false;      
         }
 
         private void HandleTimeOutTime()
         {
+            if (tooMuchTimeOut)
+            {
+                tooMuchTimeOutTimer = Random.Range(1, 3);
+            }
+
+            if (tooMuchTimeOutTimer >= 0)
+            {
+                tooMuchTimeOutTimer -= Time.deltaTime;
+            }
+
             if (attackTimeOutTimer > 0)
             {
                 attackTimeOutTimer -= Time.deltaTime;

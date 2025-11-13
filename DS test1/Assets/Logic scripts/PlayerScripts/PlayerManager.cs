@@ -105,6 +105,8 @@ namespace JA {
             inputHandler.jump_Input = false;
             inputHandler.g_Input = false;
 
+            inputHandler.esc_Input = false;
+
             float delta = Time.deltaTime;
             if (cameraHandler != null)
             {

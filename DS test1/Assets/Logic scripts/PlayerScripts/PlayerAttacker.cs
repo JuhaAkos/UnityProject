@@ -40,6 +40,10 @@ namespace JA
                     //Debug.Log("STAGE 2: " + lastAttack);
                     animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_3, true);
                     lastAttack = weapon.OH_Light_Attack_3;
+                } else if (lastAttack == weapon.OH_Heavy_Attack_1)
+                {
+                    animatorHandler.PlayTargetAnimation(weapon.OH_Heavy_Attack_2, true);
+                    lastAttack = weapon.OH_Heavy_Attack_2;
                 }
             }     
 
@@ -70,6 +74,12 @@ namespace JA
             {
                 return;
             }
+
+            if (inputHandler.lockOnFlag)
+            {
+                playerLocomotion.LockOnRotation();
+                
+            } 
             
             weaponSlotManager.attackingWeapon = weapon;
             animatorHandler.PlayTargetAnimation(weapon.OH_Heavy_Attack_1, true);

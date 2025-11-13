@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 //using Mathf;
 
 namespace JA
@@ -23,6 +24,7 @@ namespace JA
         public bool d_Pad_Down;
         public bool d_Pad_Left;
         public bool d_Pad_Right;
+        public bool esc_Input;
         public bool lockOnInput;
         //for lockon change
         public bool right_Stick_Right_Input;
@@ -79,6 +81,8 @@ namespace JA
                 inputActions.PlayerActions.Roll.performed += i => b_Input = true;
                 inputActions.PlayerActions.Roll.canceled += inputActions => b_Input = false;
 
+                inputActions.MainMenuUINavigation.ESC.performed += i => esc_Input = true;
+
                 //jump
                 inputActions.PlayerActions.Jump.performed += i => jump_Input = true;
 
@@ -105,6 +109,7 @@ namespace JA
             //HandleJumpInput();
             HandleLockOnInput();
             HandleEstusInput();
+            HandleEscInput();
         }
 
         //handlemovementinput
@@ -196,8 +201,27 @@ namespace JA
             }
 
             if (rt_Input)
-            {
-                playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
+            {                
+                if (playerManager.canDoCombo)
+                {
+                    comboFlag = true;
+                    playerAttacker.HandleWeaponCombo(playerInventory.rightWeapon);
+                    comboFlag = false;
+                }
+                else
+                {
+                    if (playerManager.isInteracting)
+                    {
+                        return;
+                    }
+                    if (playerManager.canDoCombo)
+                    {
+                        return;
+                    }
+
+                    animatorHandler.anim.SetBool("isUsingRightHand", true);
+                    playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
+                }
             }
         }
 
@@ -285,6 +309,15 @@ namespace JA
                 playerStats.UseEstus();
             }
                       
+        }
+    
+        private void HandleEscInput()
+        {
+            if (esc_Input)
+            {
+                Debug.Log("Exited early - ESC");
+                SceneManager.LoadScene("MainMenu");
+            }
         }
     }
     

@@ -5,11 +5,13 @@ namespace JA
     public class EnemyAnimatorHandler : AnimatorManager
     {
         EnemyManager enemyManager;
+        AreaDamageManager areaDamageManager;
 
         private void Awake()
         {
             anim = GetComponent<Animator>();
             enemyManager = GetComponentInParent<EnemyManager>();
+            areaDamageManager = FindObjectOfType<AreaDamageManager>();
         }
 
         //on root motion -> recenter body for non root motion
@@ -21,6 +23,11 @@ namespace JA
             deltaPosition.y = 0;
             Vector3 velocity = deltaPosition / delta;
             enemyManager.enemyRigidBody.linearVelocity = velocity;
+        }
+
+        private void areaDamageEventCall()
+        {
+            areaDamageManager.animEventReceived();
         }
         
     }

@@ -14,7 +14,7 @@ namespace JA {
         private float fadeInDelay = 0f;
 
 
-        //CALL FROM DEATH ANIMATION KEY EVENT
+        //CALL FROM TAKEDAMAGE DEATH OPTION
         public void DeathScreenFadeIn()
         {
             fadeInActive = true;

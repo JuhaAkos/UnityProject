@@ -13,6 +13,7 @@ namespace JA
         public LayerMask detectionLayer;
         public PursueTargetState pursueTargetState;
         public DeadState deadState;
+        public WakeUpState wakeUpState;
         public EnemyStats enemyStats;
         public CharacterStats charactersStats;
 
@@ -35,7 +36,7 @@ namespace JA
                 return deadState;
             }
 
-            if (isSleeping && enemyManager.isInteracting == false)
+            if (isSleeping)
             {
                 enemyAnimatorHandler.PlayTargetAnimation(sleepAnimation, true);
             }
@@ -71,7 +72,8 @@ namespace JA
             if (enemyManager.currentTarget != null)
             {
                 enemyStats.enableBossUIFromStats();
-                return pursueTargetState;
+                return wakeUpState;
+
             } else
             {
                 return this;

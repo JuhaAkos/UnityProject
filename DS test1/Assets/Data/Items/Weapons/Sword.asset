@@ -22,6 +22,7 @@ MonoBehaviour:
   OH_Light_Attack_2: OH_Light_Attack_02
   OH_Light_Attack_3: OH_Light_Attack_03
   OH_Heavy_Attack_1: OH_Heavy_Attack_01
+  OH_Heavy_Attack_2: OH_Heavy_Attack_02
   baseStamina: 16
   lightAttackMultiplier: 1
   heavyAttackMultiplier: 2

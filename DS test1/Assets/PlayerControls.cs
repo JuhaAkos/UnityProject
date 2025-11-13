@@ -611,6 +611,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ESC"",
+                    ""type"": ""Button"",
+                    ""id"": ""be3fdd3f-ae14-4b79-b76b-48bf9cee5ad8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -622,6 +631,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ClickOnButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8db91914-d2b7-4425-8bfd-3c2591924c0b"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ESC"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -654,6 +674,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // Main Menu UI Navigation
         m_MainMenuUINavigation = asset.FindActionMap("Main Menu UI Navigation", throwIfNotFound: true);
         m_MainMenuUINavigation_ClickOnButton = m_MainMenuUINavigation.FindAction("ClickOnButton", throwIfNotFound: true);
+        m_MainMenuUINavigation_ESC = m_MainMenuUINavigation.FindAction("ESC", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -1158,6 +1179,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_MainMenuUINavigation;
     private List<IMainMenuUINavigationActions> m_MainMenuUINavigationActionsCallbackInterfaces = new List<IMainMenuUINavigationActions>();
     private readonly InputAction m_MainMenuUINavigation_ClickOnButton;
+    private readonly InputAction m_MainMenuUINavigation_ESC;
     /// <summary>
     /// Provides access to input actions defined in input action map "Main Menu UI Navigation".
     /// </summary>
@@ -1173,6 +1195,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "MainMenuUINavigation/ClickOnButton".
         /// </summary>
         public InputAction @ClickOnButton => m_Wrapper.m_MainMenuUINavigation_ClickOnButton;
+        /// <summary>
+        /// Provides access to the underlying input action "MainMenuUINavigation/ESC".
+        /// </summary>
+        public InputAction @ESC => m_Wrapper.m_MainMenuUINavigation_ESC;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1202,6 +1228,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ClickOnButton.started += instance.OnClickOnButton;
             @ClickOnButton.performed += instance.OnClickOnButton;
             @ClickOnButton.canceled += instance.OnClickOnButton;
+            @ESC.started += instance.OnESC;
+            @ESC.performed += instance.OnESC;
+            @ESC.canceled += instance.OnESC;
         }
 
         /// <summary>
@@ -1216,6 +1245,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @ClickOnButton.started -= instance.OnClickOnButton;
             @ClickOnButton.performed -= instance.OnClickOnButton;
             @ClickOnButton.canceled -= instance.OnClickOnButton;
+            @ESC.started -= instance.OnESC;
+            @ESC.performed -= instance.OnESC;
+            @ESC.canceled -= instance.OnESC;
         }
 
         /// <summary>
@@ -1392,5 +1424,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnClickOnButton(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ESC" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnESC(InputAction.CallbackContext context);
     }
 }

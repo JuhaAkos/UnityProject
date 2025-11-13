@@ -86,7 +86,7 @@ namespace JA
                 float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
 
                 //minus needed for change to comatstance
-                if (distanceFromTarget > enemyManager.maximumAttackRange - 1)
+                if (distanceFromTarget > enemyManager.maximumAttackRange - 1.5)
                 {
 
                     Vector3 direction = enemyManager.currentTarget.transform.position - transform.position;
