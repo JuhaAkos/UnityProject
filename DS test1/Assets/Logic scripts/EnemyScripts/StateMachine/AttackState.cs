@@ -18,6 +18,7 @@ namespace JA
             }
 
             enemyManager.navmeshAgent.transform.localPosition = Vector3.zero;
+            enemyManager.navmeshAgent.transform.localRotation = Quaternion.identity;
 
             Vector3 targetDirection = enemyManager.currentTarget.transform.position - transform.position;
             float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
@@ -67,6 +68,7 @@ namespace JA
                                 enemyAnimatorHandler.PlayTargetAnimation(currentAttack.actionAnimation, true);
                                 enemyManager.isPerformingAction = true;
                                 enemyManager.currentRecoveryTime = currentAttack.recoveryTime;
+                                Debug.Log(currentAttack.recoveryTime);
                                 currentAttack = null;
                                 return combatStanceState;
                             }
@@ -212,9 +214,7 @@ namespace JA
 
             //manual rotate
             if (enemyManager.isPerformingAction)
-            {    
-                /*
-                Debug.Log("Rotate: attack, isperforming");    
+            {       
                 Vector3 direction = enemyManager.currentTarget.transform.position - transform.position;
                 direction.y = 0;
                 direction.Normalize();
@@ -225,9 +225,7 @@ namespace JA
                 }
 
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
-                enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed / Time.deltaTime);
-                */
-                
+                enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed * Time.deltaTime);                
             }
             
             //navmash rotate if no action
@@ -259,7 +257,7 @@ namespace JA
                     enemyManager.navmeshAgent.SetDestination(enemyManager.currentTarget.transform.position);
                     enemyManager.enemyRigidBody.linearVelocity = targetVelocity;
                     //ENEMYMANAGER.transform!!!
-                    enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.navmeshAgent.transform.rotation, enemyManager.rotationSpeed / 10000 / Time.deltaTime);
+                    enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.navmeshAgent.transform.rotation, enemyManager.rotationSpeed / 1 / Time.deltaTime);
                     //Debug.Log("Slerp: " + enemyManager.rotationSpeed / 10000 / Time.deltaTime);
 
                 }

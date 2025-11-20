@@ -6,7 +6,7 @@ namespace JA
     public class EstusItem : Item
     {
         public GameObject currentItemModel;
-        private int healAmount = 20;
+        [SerializeField] private int healAmount = 60;
 
         public int GetHealAmount()
         {

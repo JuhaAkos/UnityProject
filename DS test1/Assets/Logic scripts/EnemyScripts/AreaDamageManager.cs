@@ -18,7 +18,6 @@ namespace JA {
 
         public void animEventReceived()
         {
-            Debug.Log("anim called + " + isColliderActive);
             if (isColliderActive)
             {
                 isColliderActive = false;
@@ -32,10 +31,8 @@ namespace JA {
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log("Voltam");
             if (isColliderActive)
             {
-                Debug.Log("DAMAGED!");
                 //other as in the other thing that entered the radius
                 PlayerStats playerStats = other.GetComponent<PlayerStats>();
 

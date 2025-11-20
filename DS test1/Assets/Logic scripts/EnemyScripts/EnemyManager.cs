@@ -8,6 +8,8 @@ namespace JA {
         EnemyAnimatorHandler enemyAnimatorHandler;
         EnemyStats enemyStats;
 
+        public Vector3 lookAngle;
+
         public NavMeshAgent navmeshAgent;
         public State currentState;
         public CharacterStats currentTarget;
@@ -31,11 +33,13 @@ namespace JA {
 
         public Rigidbody enemyRigidBody;
 
+        #region attackstate timeout
         public bool isOnAttackTimeOut;
         public bool timeOutStarted;
         public float attackTimeOutTimer = 0;
         public bool tooMuchTimeOut;
         public float tooMuchTimeOutTimer = 0;
+        #endregion
 
         private void Awake()
         {
@@ -60,6 +64,7 @@ namespace JA {
             StartTimeOut();
             HandleTimeOutTime();
 
+            lookAngle = this.transform.forward;
 
             isInteracting = enemyAnimatorHandler.anim.GetBool("isInteracting");
         }
@@ -90,7 +95,7 @@ namespace JA {
         private void HandleRecoveryTime()
         {
             if (currentRecoveryTime > 0)
-            {
+            {                
                 currentRecoveryTime -= Time.deltaTime;
             }
 
@@ -98,11 +103,13 @@ namespace JA {
             {
                 if (currentRecoveryTime <= 0)
                 {
+                    Debug.Log("DONE");
                     isPerformingAction = false;
                 }
             }
         }
 
+        #region attackstate timeout
         private void StartTimeOut()
         {
             if (timeOutStarted && attackTimeOutTimer <= 0 && tooMuchTimeOutTimer <= 0)
@@ -141,6 +148,7 @@ namespace JA {
                 }
             }
         }
+        #endregion
 
     }
 }

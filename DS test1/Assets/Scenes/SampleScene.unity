@@ -10185,7 +10185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bee77064ac6472940a6b7e7f66939f46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JA.PlayerStats
-  healthLevel: 10
+  healthLevel: 1000
   maxHealth: 0
   currentHealth: 0
   staminaLevel: 10
@@ -13851,6 +13851,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JA.EnemyManager
   lockOnTransform: {fileID: 1999247483}
+  lookAngle: {x: 0, y: 0, z: 0}
   navmeshAgent: {fileID: 0}
   currentState: {fileID: 0}
   currentTarget: {fileID: 0}
@@ -14307,6 +14308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JA.EnemyManager
   lockOnTransform: {fileID: 1351715885}
+  lookAngle: {x: 0, y: 0, z: 0}
   navmeshAgent: {fileID: 0}
   currentState: {fileID: 938038291}
   currentTarget: {fileID: 0}
@@ -14387,7 +14389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a39248aee50dc545b799a990ef38868, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthLevel: 10
+  healthLevel: 40
   maxHealth: 0
   currentHealth: 0
   staminaLevel: 10

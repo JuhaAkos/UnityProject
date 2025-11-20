@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e094ef6d0042a2848ba380e5e2cae7de
+guid: 29551a8ddcc46694e882641a78c3e1ea
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Boss_stab1
-      takeName: Boss_stab1
-      internalID: 8989723022623101479
+      name: Heavy_02_new
+      takeName: Heavy_02_new
+      internalID: -5902364099708327769
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 60
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -55,14 +55,21 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.5460123
+      - time: 0.09202454
+        functionName: DrainStaminaHeavyAttack
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.15950921
         functionName: OpenDamageCollider
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.6809816
+      - time: 0.41554135
         functionName: CloseDamageCollider
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
@@ -74,11 +81,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Boss_backSwing1
-      takeName: Boss_backSwing1
-      internalID: -7281010947584021332
+      name: Heavy_01_new.003
+      takeName: Heavy_01_new.003
+      internalID: 726928622381985177
       firstFrame: 0
-      lastFrame: 49
+      lastFrame: 60
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -98,17 +105,38 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.42331287
+      - time: 0.17025344
+        functionName: DrainStaminaHeavyAttack
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.49079758
         functionName: OpenDamageCollider
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.54092836
+      - time: 0.5736644
         functionName: CloseDamageCollider
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.5860911
+        functionName: EnableCombo
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 243612ce7eefc0d4cad99799a1871c6f, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.9754602
+        functionName: DisableCombo
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 243612ce7eefc0d4cad99799a1871c6f, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
@@ -117,54 +145,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Boss_swing2
-      takeName: Boss_swing2
-      internalID: -2428135091860443793
+      name: Estus
+      takeName: Estus
+      internalID: 5315483728009628730
       firstFrame: 0
-      lastFrame: 124
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 0
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events:
-      - time: 0.34355828
-        functionName: OpenDamageCollider
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.6441718
-        functionName: CloseDamageCollider
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Boss_takeDamage
-      takeName: Boss_takeDamage
-      internalID: -7741080796556813760
-      firstFrame: 0
-      lastFrame: 29
+      lastFrame: 40
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -188,150 +173,7 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Boss_stomp1.002
-      takeName: Boss_stomp1.002
-      internalID: 8502383667945394691
-      firstFrame: 0
-      lastFrame: 25
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events:
-      - time: 0.7844252
-        functionName: areaDamageEventCall
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: a4eff0b8df6b85d45b039dc58176269f, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.9754601
-        functionName: areaDamageEventCall
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: a4eff0b8df6b85d45b039dc58176269f, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Boss_swing1.003
-      takeName: Boss_swing1.003
-      internalID: 8150078607611782734
-      firstFrame: 0
-      lastFrame: 49
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events:
-      - time: 0.5030675
-        functionName: OpenDamageCollider
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.71662694
-        functionName: CloseDamageCollider
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Boss_swing1_combo.002
-      takeName: Boss_swing1_combo.002
-      internalID: -1682323378080096475
-      firstFrame: 0
-      lastFrame: 79
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events:
-      - time: 0.29905745
-        functionName: OpenDamageCollider
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.37423313
-        functionName: CloseDamageCollider
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.6341286
-        functionName: OpenDamageCollider
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.8119913
-        functionName: CloseDamageCollider
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: dd234cfd2c0be754cbb1ed7ae9e9fe39, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1

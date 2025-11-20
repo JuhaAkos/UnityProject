@@ -16,7 +16,6 @@ namespace JA
             if (enemyManager.isPerformingAction)
             {
                 enemyAnimatorHandler.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
-                return this;
             }
 
             Vector3 targetDirection = enemyManager.currentTarget.transform.position - enemyManager.transform.position;
@@ -24,7 +23,7 @@ namespace JA
             //Debug.Log("dist: " + distanceFromTarget);
             float viewableAngle = Vector3.Angle(targetDirection, enemyManager.transform.forward);
 
-            HandleRotateTowardsTarget(enemyManager);
+            HandleRotateTowardsTarget(enemyManager);          
 
             if (distanceFromTarget > enemyManager.maximumAttackRange)
             {
@@ -60,7 +59,8 @@ namespace JA
             }
             return this;
         }
-        
+
+                
         private void HandleRotateTowardsTarget(EnemyManager enemyManager)
         {
             //manual rotate
@@ -86,7 +86,7 @@ namespace JA
                 float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
 
                 //minus needed for change to comatstance
-                if (distanceFromTarget > enemyManager.maximumAttackRange - 1.5)
+                if (distanceFromTarget > enemyManager.maximumAttackRange - 1)
                 {
 
                     Vector3 direction = enemyManager.currentTarget.transform.position - transform.position;
@@ -121,6 +121,7 @@ namespace JA
                     enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.navmeshAgent.transform.rotation, enemyManager.rotationSpeed / Time.deltaTime);
                 }
             }
+            
         }
     }
 }

@@ -27,8 +27,9 @@ namespace JA
             float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
 
             enemyManager.navmeshAgent.transform.localPosition = Vector3.zero;
+            enemyManager.navmeshAgent.transform.localRotation = Quaternion.identity;
 
-            //HandleRotateTowardsTarget(enemyManager);
+            HandleRotateTowardsTarget(enemyManager);
             /*
             if (enemyManager.isPerformingAction)
             {
@@ -55,7 +56,6 @@ namespace JA
 
         private void HandleRotateTowardsTarget(EnemyManager enemyManager)
         {
-
             //manual rotate
             if (enemyManager.isPerformingAction)
             {
@@ -71,7 +71,7 @@ namespace JA
                 }
 
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
-                enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed / Time.deltaTime);
+                enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed * Time.deltaTime);
 
 
             }
@@ -105,7 +105,7 @@ namespace JA
                     enemyManager.navmeshAgent.SetDestination(enemyManager.currentTarget.transform.position);
                     enemyManager.enemyRigidBody.linearVelocity = targetVelocity;
                     //ENEMYMANAGER.transform!!!
-                    enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.navmeshAgent.transform.rotation, enemyManager.rotationSpeed / Time.deltaTime);
+                    enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.navmeshAgent.transform.rotation, enemyManager.rotationSpeed / 10000 / Time.deltaTime);
 
                 }
                 
