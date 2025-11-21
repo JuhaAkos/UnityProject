@@ -46,7 +46,6 @@ namespace JA
             //Debug.Log("NEW angle " + Vector3.SignedAngle(transform.forward, targetDirection, Vector3.up));
             if (currentAttack != null)
             {
-                //Debug.Log("if ag");
                 //if too close for CURRENT ATTACK-> new attack
                 if (distanceFromTarget < currentAttack.minimumDistanceNeededToAttack)
                 {
@@ -68,7 +67,6 @@ namespace JA
                                 enemyAnimatorHandler.PlayTargetAnimation(currentAttack.actionAnimation, true);
                                 enemyManager.isPerformingAction = true;
                                 enemyManager.currentRecoveryTime = currentAttack.recoveryTime;
-                                Debug.Log(currentAttack.recoveryTime);
                                 currentAttack = null;
                                 return combatStanceState;
                             }
@@ -79,8 +77,8 @@ namespace JA
             else if (!enemyManager.isPerformingAction && !enemyManager.isOnAttackTimeOut)
             {   
                 enemyManager.navmeshAgent.transform.localPosition = Vector3.zero;
+                //enemyManager.navmeshAgent.transform.localRotation = Quaternion.identity;
                 //Debug.Log("performing: " + enemyManager.isPerformingAction);
-                //HandleRotateTowardsTarget(enemyManager);
                 GetNewAttack(enemyManager);
             }
 
@@ -107,7 +105,7 @@ namespace JA
 
             float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, transform.position);
 
-            int maxScore = 5;
+            int maxScore = 8;
 
             for (int i = 0; i < enemyAttacks.Length; i++)
             {
@@ -207,13 +205,14 @@ namespace JA
         private void HandleRotateTowardsTarget(EnemyManager enemyManager)
         {
             enemyManager.navmeshAgent.transform.localPosition = Vector3.zero;
+            enemyManager.navmeshAgent.transform.localRotation = Quaternion.identity;
 
             Vector3 targetDirection = enemyManager.currentTarget.transform.position - transform.position;
             float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
             float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
 
             //manual rotate
-            if (enemyManager.isPerformingAction)
+            if (false)
             {       
                 Vector3 direction = enemyManager.currentTarget.transform.position - transform.position;
                 direction.y = 0;
@@ -225,7 +224,7 @@ namespace JA
                 }
 
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
-                enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed * Time.deltaTime);                
+                enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed * Time.deltaTime / 24);             
             }
             
             //navmash rotate if no action
@@ -257,6 +256,7 @@ namespace JA
                     enemyManager.navmeshAgent.SetDestination(enemyManager.currentTarget.transform.position);
                     enemyManager.enemyRigidBody.linearVelocity = targetVelocity;
                     //ENEMYMANAGER.transform!!!
+                    
                     enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.navmeshAgent.transform.rotation, enemyManager.rotationSpeed / 1 / Time.deltaTime);
                     //Debug.Log("Slerp: " + enemyManager.rotationSpeed / 10000 / Time.deltaTime);
 

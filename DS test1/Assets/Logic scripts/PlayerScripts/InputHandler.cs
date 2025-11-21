@@ -316,6 +316,7 @@ namespace JA
             if (esc_Input)
             {
                 Debug.Log("Exited early - ESC");
+                Cursor.visible = true;
                 SceneManager.LoadScene("MainMenu");
             }
         }

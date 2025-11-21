@@ -4,6 +4,7 @@ namespace JA {
     public class DamageCollider : MonoBehaviour
     {
         Collider damageCollider;
+        AnimatorHandler animatorHandler;
         public int currentWeaponDamage = 25;
 
         private void Awake()
@@ -12,6 +13,7 @@ namespace JA {
             damageCollider.gameObject.SetActive(true);
             damageCollider.isTrigger = true;
             damageCollider.enabled = false;
+            animatorHandler = FindObjectOfType<AnimatorHandler>();
         }
 
         public void EnableDamageCollider()
@@ -42,7 +44,14 @@ namespace JA {
 
                 if (enemyStats != null)
                 {
-                    enemyStats.TakeDamage(currentWeaponDamage);
+                    if (animatorHandler.anim.GetBool("isHeavyAttackActive"))
+                    {
+                        enemyStats.TakeDamage(currentWeaponDamage * 2);
+                    } else
+                    {
+                        enemyStats.TakeDamage(currentWeaponDamage);
+                    }                    
+                    
                 }
             }
 

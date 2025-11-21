@@ -83,6 +83,7 @@ namespace JA
             
             weaponSlotManager.attackingWeapon = weapon;
             animatorHandler.PlayTargetAnimation(weapon.OH_Heavy_Attack_1, true);
+            animatorHandler.anim.SetBool("isHeavyAttackActive", true);
             lastAttack = weapon.OH_Heavy_Attack_1;
         }
     }

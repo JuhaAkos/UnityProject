@@ -3,8 +3,8 @@ using UnityEngine;
 namespace JA {
     public class AreaDamageManager : MonoBehaviour, AnimationEventReceiver
     {
-        public int damage = 25;
-        public int radius = 4;
+        public int damage = 10;
+        public int radius = 2;
         private SphereCollider colliderSphere;
         public bool isColliderActive = false;
         public Collider areaCollider;

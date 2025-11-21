@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Swing1_combo
   m_EditorClassIdentifier: Assembly-CSharp::JA.EnemyAttackAction
   actionAnimation: Boss_swing1_combo
-  attackScore: 10
+  attackScore: 20
   recoveryTime: 6
   maximumAttackAngle: 35
   minimumAttackAngle: 325

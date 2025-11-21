@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LeftSwing
   m_EditorClassIdentifier: Assembly-CSharp::JA.EnemyAttackAction
   actionAnimation: Boss_sideSwing_left
-  attackScore: 8
+  attackScore: 5
   recoveryTime: 2
   maximumAttackAngle: 310
   minimumAttackAngle: 180

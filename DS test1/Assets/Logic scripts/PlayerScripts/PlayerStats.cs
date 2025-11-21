@@ -6,7 +6,7 @@ namespace JA {
         public HealthBar healthbar;
         public StaminaBar staminabar;
 
-        public float staminaRegenerationAmount = 12;
+        public float staminaRegenerationAmount = 25;
         public float staminaRegenTimer = 0;
         public int estusCount = 3;
 
@@ -14,7 +14,8 @@ namespace JA {
         PlayerManager playerManager;
         EstusUICounter estusUICounter;
         DeathScreen deathScreen;
-        public EstusItem estusItem;
+        public EstusItem estusItem; 
+        EstusHandler estusHandler;    
 
         public void Awake()
         {
@@ -25,8 +26,8 @@ namespace JA {
 
             estusUICounter = FindObjectOfType<EstusUICounter>();
             deathScreen = FindObjectOfType<DeathScreen>();
+            estusHandler = GetComponent<EstusHandler>();
         }
-
 
         void Start()
         {
@@ -123,18 +124,21 @@ namespace JA {
             estusCount -= 1;
             //CALL PLAYERINV.SwitchToHealingItem() based on anim event
             animatorHandler.PlayTargetAnimation("Heal", true);
-            if (currentHealth + estusItem.GetHealAmount() > maxHealth)
+            estusHandler.SetLightActive(true);
+            if (currentHealth + estusHandler.GetHealAmount() > maxHealth)
             {
                 currentHealth = maxHealth;
             }
             else
             {
-                currentHealth = currentHealth + estusItem.GetHealAmount();
+                currentHealth = currentHealth + estusHandler.GetHealAmount();
             }
 
             healthbar.SetCurrentHealth(currentHealth);
             estusUICounter.ChangeEstusCounterText(estusCount);
-            
+        
         }
+    
+        
     }
 }

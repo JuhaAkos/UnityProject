@@ -48,6 +48,7 @@ namespace JA {
 
             if (exitToMenuDelay >= 2)
             {
+                Cursor.visible = true;
                 SceneManager.LoadScene("MainMenu");
             }  
         }

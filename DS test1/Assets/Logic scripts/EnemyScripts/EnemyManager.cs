@@ -103,7 +103,6 @@ namespace JA {
             {
                 if (currentRecoveryTime <= 0)
                 {
-                    Debug.Log("DONE");
                     isPerformingAction = false;
                 }
             }
@@ -115,7 +114,7 @@ namespace JA {
             if (timeOutStarted && attackTimeOutTimer <= 0 && tooMuchTimeOutTimer <= 0)
             {
                 tooMuchTimeOut = true;
-                attackTimeOutTimer = Random.Range(1, 4);
+                attackTimeOutTimer = Random.Range(2, 5);
                 isOnAttackTimeOut = true;
                 
                 Debug.Log("On timeout for: " + attackTimeOutTimer); 
@@ -127,7 +126,7 @@ namespace JA {
         {
             if (tooMuchTimeOut)
             {
-                tooMuchTimeOutTimer = Random.Range(1, 3);
+                tooMuchTimeOutTimer = Random.Range(0, 5);
             }
 
             if (tooMuchTimeOutTimer >= 0)

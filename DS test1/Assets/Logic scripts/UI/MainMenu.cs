@@ -30,6 +30,7 @@ namespace JA {
 
             if (fadeOutScreen.alpha >= 1)
             {
+                Cursor.visible = false;
                 SceneManager.LoadScene("SampleScene");
             }
         }
