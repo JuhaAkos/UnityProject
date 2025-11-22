@@ -3,8 +3,8 @@ using UnityEngine;
 public class ResetAnimatorBool : StateMachineBehaviour
 {
 
-    public string targetBool;
-    public bool status;
+    [SerializeField] private string targetBool;
+    [SerializeField] private bool status;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {

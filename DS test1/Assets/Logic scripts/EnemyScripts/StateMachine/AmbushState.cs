@@ -5,19 +5,19 @@ namespace JA
     public class AmbushState : State
     {
 
-        public bool isSleeping;
+        [SerializeField] bool isSleeping;
         float detectionRadius = 10;
-        public string wakeAnimation;
-        public string sleepAnimation;
+        [SerializeField] string wakeAnimation;
+        [SerializeField] string sleepAnimation;
 
-        public LayerMask detectionLayer;
-        public PursueTargetState pursueTargetState;
-        public DeadState deadState;
-        public WakeUpState wakeUpState;
-        public EnemyStats enemyStats;
-        public CharacterStats charactersStats;
+        [SerializeField] LayerMask detectionLayer;
+        [SerializeField] PursueTargetState pursueTargetState;
+        [SerializeField] DeadState deadState;
+        [SerializeField] WakeUpState wakeUpState;
+        [SerializeField] EnemyStats enemyStats;
+        [SerializeField] CharacterStats charactersStats;
 
-        public Vector3 here;
+        [SerializeField] Vector3 here;
 
         private void Awake()
         {

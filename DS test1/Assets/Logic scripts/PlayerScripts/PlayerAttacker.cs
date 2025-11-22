@@ -9,7 +9,7 @@ namespace JA
         InputHandler inputHandler;
         WeaponSlotManager weaponSlotManager;
         PlayerStats playerStats;
-        public string lastAttack;
+        [SerializeField] string lastAttack;
 
         private void Awake()
         {

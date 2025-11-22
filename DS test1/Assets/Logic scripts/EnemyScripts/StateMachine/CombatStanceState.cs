@@ -4,9 +4,9 @@ namespace JA
 {
     public class CombatStanceState : State
     {
-        public AttackState attackState;
-        public DeadState deadState;
-        public PursueTargetState pursueTargetState;
+        [SerializeField] AttackState attackState;
+        [SerializeField] DeadState deadState;
+        [SerializeField] PursueTargetState pursueTargetState;
 
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorHandler enemyAnimatorHandler)
         {

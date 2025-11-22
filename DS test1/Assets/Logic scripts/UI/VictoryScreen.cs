@@ -5,9 +5,8 @@ using UnityEngine.SceneManagement;
 namespace JA { 
     public class VictoryScreen : MonoBehaviour
     {
-        public CanvasGroup victoryScreen;
+        [SerializeField] private CanvasGroup victoryScreen;
         private bool fadeInActive = false;
-        private bool isLoadedIn = false;
         private float fadeInDelay = 0f;
         private float exitToMenuDelay = 0f;
 
@@ -16,12 +15,6 @@ namespace JA {
         public void VictoryScreenFadeIn()
         {
             fadeInActive = true;
-        }
-
-
-        public void ReturnToMainMenu()
-        {
-
         }
 
         private void Start()
@@ -33,17 +26,17 @@ namespace JA {
         {
             if (fadeInDelay > 2 && victoryScreen.alpha < 1)
             {
-                victoryScreen.alpha += (Time.deltaTime / 6);
+                victoryScreen.alpha += Time.deltaTime / 6;
             }
 
             if (fadeInActive)
             {
-                fadeInDelay += (Time.deltaTime / 2);
+                fadeInDelay += Time.deltaTime / 2;
             }
 
             if (victoryScreen.alpha >= 1)
             {
-                exitToMenuDelay += (Time.deltaTime / 2);
+                exitToMenuDelay += Time.deltaTime / 2;
             }     
 
             if (exitToMenuDelay >= 2)

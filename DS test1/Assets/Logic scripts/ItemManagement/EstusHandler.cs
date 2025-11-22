@@ -3,7 +3,7 @@ using UnityEngine;
 public class EstusHandler : MonoBehaviour
 {
     Animator anim;
-    public GameObject lightSource;
+    [SerializeField] GameObject lightSource;
     public bool isLightActive;
     [SerializeField] private int healAmount = 60;
 

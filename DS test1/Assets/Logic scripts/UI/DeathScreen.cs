@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 namespace JA { 
     public class DeathScreen : MonoBehaviour
     {
-        public CanvasGroup deathScreen;
-        public CanvasGroup fadeInScreen;
+        [SerializeField] private CanvasGroup deathScreen;
+        [SerializeField] private CanvasGroup fadeInScreen;
         private bool fadeInActive;
         private bool yetToExit;
         private float timingDelay = 0f;
@@ -20,12 +20,6 @@ namespace JA {
             fadeInActive = true;
         }
 
-
-        public void ReturnToMainMenu()
-        {
-
-        }
-
         private void Start()
         {
             fadeInScreen.alpha = 1;
@@ -37,12 +31,12 @@ namespace JA {
             {
                 if (deathScreen.alpha < 1 && fadeInActive)
                 {
-                    deathScreen.alpha += (Time.deltaTime / 4);
+                    deathScreen.alpha += Time.deltaTime / 4;
                 }
 
                 if (timingDelay < 3 && fadeInActive)
                 {
-                    timingDelay += (Time.deltaTime / 2);
+                    timingDelay += Time.deltaTime / 2;
                 }
 
                 if (timingDelay >= 3)

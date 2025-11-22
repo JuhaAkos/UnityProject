@@ -11,7 +11,7 @@ namespace JA
         {
             anim = GetComponent<Animator>();
             enemyManager = GetComponentInParent<EnemyManager>();
-            areaDamageManager = FindObjectOfType<AreaDamageManager>();
+            areaDamageManager = FindFirstObjectByType<AreaDamageManager>();
         }
 
         //on root motion -> recenter body for non root motion

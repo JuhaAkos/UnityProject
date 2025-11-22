@@ -11,14 +11,13 @@ namespace JA
         public WeaponItem rightWeapon;
         public WeaponItem leftWeapon;
 
-        public WeaponItem unarmedWeapon;
+        [SerializeField] WeaponItem unarmedWeapon;
 
-        public WeaponItem[] weaponsInRightHandSlots = new WeaponItem[1];
-        public WeaponItem[] weaponsInLeftHandSlots = new WeaponItem[1];
-        public EstusItem estusFlask;
+        [SerializeField] WeaponItem[] weaponsInRightHandSlots = new WeaponItem[1];
+        [SerializeField] WeaponItem[] weaponsInLeftHandSlots = new WeaponItem[1];
+        [SerializeField] EstusItem estusFlask;
 
-        public int currentRightWeaponIndex = -1;
-        public int currentLeftWeaponIndex = -1;
+        [SerializeField] int currentRightWeaponIndex = -1;
 
         public List<WeaponItem> weaponInventory;
 
@@ -75,9 +74,5 @@ namespace JA
 
         }
 
-        public void ChangeLeftWeapon()
-        {
-            
-        }
     }
 }

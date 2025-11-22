@@ -12,24 +12,24 @@ namespace JA {
         InputHandler inputHandler;
         PlayerManager playerManager;
 
-        public Transform targetTransform; //camera follows this object
-        public Transform cameraTransform;
-        public Transform cameraPivotTransform; //up and down pivot?
+        [SerializeField] Transform targetTransform; //camera follows this object
+        [SerializeField] Transform cameraTransform;
+        [SerializeField] Transform cameraPivotTransform; //up and down pivot?
         private Transform myTransform;
         private Vector3 cameraTransformPosition; //to also use camera z position changes
         public LayerMask ignoreLayers;
 
         private Vector3 cameraFollowVelocity = Vector3.zero; //for camspeed
 
-        public static CameraHandler singleton;
+        [SerializeField] static CameraHandler singleton;
 
         //public float lookSpeed = 0.1f;
-        public float followSpeed = 0.08f;
+        [SerializeField] float followSpeed = 0.08f;
         //public float pivotSpeed = 0.02f;
 
         //EP23 CUSTOM FIX
-        public float lookSpeed = 260f;
-        public float pivotSpeed = 100f;
+        [SerializeField] float lookSpeed = 260f;
+        [SerializeField] float pivotSpeed = 100f;
 
 
         private float defaultPosition;
@@ -37,13 +37,13 @@ namespace JA {
         private float pivotAngle; //up and down
 
         //PIVOT: up/down angle
-        public float minimumPivot = -35;
-        public float maximumPivot = 35;
+        [SerializeField] float minimumPivot = -35;
+        [SerializeField] float maximumPivot = 35;
 
         private float targetPosition;
-        public float cameraSphereRadius = 0.2f;
-        public float cameraCollisionOffset = 0.2f; //how much the camera will bounce back from objects it collides with
-        public float minimumCollisionOffset = 0.2f;
+        [SerializeField] float cameraSphereRadius = 0.2f;
+        [SerializeField] float cameraCollisionOffset = 0.2f; //how much the camera will bounce back from objects it collides with
+        [SerializeField] float minimumCollisionOffset = 0.2f;
 
         //lockon
         public Transform currentLockOnTarget;
@@ -65,9 +65,9 @@ namespace JA {
 
             //defines how camera interacts with surfaces
             ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
-            targetTransform = FindObjectOfType<PlayerManager>().transform;
-            inputHandler = FindObjectOfType<InputHandler>();
-            playerManager = FindObjectOfType<PlayerManager>();
+            targetTransform = FindFirstObjectByType<PlayerManager>().transform;
+            inputHandler = FindFirstObjectByType<InputHandler>();
+            playerManager = FindFirstObjectByType<PlayerManager>();
         }
 
         private void Start()
@@ -119,8 +119,6 @@ namespace JA {
             //force rotation on lockon
             else
             {
-                float velocity = 0;
-
                 Vector3 dir = currentLockOnTarget.position - targetTransform.position;
                 dir.Normalize();
                 dir.y = 0;

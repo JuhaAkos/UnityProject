@@ -15,9 +15,7 @@ namespace JA {
         {
             playerManager = GetComponentInParent<PlayerManager>();
             anim = GetComponent<Animator>();
-            //Debug.Log("anim: " + (anim == null));
             inputHandler = GetComponentInParent<InputHandler>();
-            //Debug.Log("hi: " + (inputHandler == null));
             playerLocomotion = GetComponentInParent<PlayerLocomotion>();
             //vertical and horizontal will refer to the values in the animator element
             vertical = Animator.StringToHash("Vertical");
@@ -92,9 +90,6 @@ namespace JA {
             anim.SetFloat(vertical, v, 0.1f, Time.deltaTime);
             //anim.SetFloat(vertical, v);
             anim.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
-
-            //LOG CURRENT SPEED
-            //Debug.Log(anim.GetFloat(vertical));
         }
 
         public void CanRotate()
@@ -136,7 +131,6 @@ namespace JA {
                 //Debug.Log("missing Pmanager");
             }
 
-            //Debug.Log("Isint: " + playerManager.isInteracting==null);
             if (playerManager.isInteracting == false)
             {
                 return;
@@ -147,23 +141,21 @@ namespace JA {
 
             //when an aniamtion moves the character, the object is centered back onto the character
             float delta = Time.deltaTime;
-            playerLocomotion.rigidbody.linearDamping = 0;
+            playerLocomotion.GetComponent<Rigidbody>().linearDamping = 0;
             //playerLocomotion.rigidbody.linearDamping = 0;
             Vector3 deltaPosition = anim.deltaPosition;
             deltaPosition.y = 0;
             Vector3 velocity = deltaPosition / delta;
-            playerLocomotion.rigidbody.linearVelocity = velocity;
+            playerLocomotion.GetComponent<Rigidbody>().linearVelocity = velocity;
         }
 
         public void EnableCombo()
         {
-            //Debug.Log("enabled combo");
             anim.SetBool("canDoCombo", true);
         }
 
         public void DisableCombo()
         {
-            //Debug.Log("disabled combo");
             anim.SetBool("canDoCombo", false);
         }
 

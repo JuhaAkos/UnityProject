@@ -4,8 +4,8 @@ namespace JA
 {
     public class PursueTargetState : State
     {
-        public CombatStanceState combatStanceState;
-        public DeadState deadState;
+        [SerializeField] CombatStanceState combatStanceState;
+        [SerializeField] DeadState deadState;
 
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorHandler enemyAnimatorHandler)
         {
@@ -20,7 +20,6 @@ namespace JA
 
             Vector3 targetDirection = enemyManager.currentTarget.transform.position - enemyManager.transform.position;
             float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
-            //Debug.Log("dist: " + distanceFromTarget);
             float viewableAngle = Vector3.Angle(targetDirection, enemyManager.transform.forward);
 
             HandleRotateTowardsTarget(enemyManager);          
@@ -28,19 +27,6 @@ namespace JA
             if (distanceFromTarget > enemyManager.maximumAttackRange)
             {
                 enemyAnimatorHandler.anim.SetFloat("Vertical", 1, 0.1f, Time.deltaTime);
-
-                /*
-                //atmen fix - no movement without it
-                targetDirection.Normalize();
-                targetDirection.y = 0;
-                float speed = 3;
-                targetDirection *= speed;
-
-                Vector3 projectedVelocity = Vector3.ProjectOnPlane(targetDirection, Vector3.up);
-
-                enemyManager.enemyRigidBody.linearVelocity = projectedVelocity;
-                //maybe caused by root motion / lack thereof   
-                */
             }
 
             
@@ -50,14 +36,13 @@ namespace JA
             //chase target
             //close enough? -> switch to attack stance
 
-            if (distanceFromTarget <= enemyManager.maximumAttackRange)
+            if (distanceFromTarget <= enemyManager.maximumAttackRange - 1)
             {
                 return combatStanceState;
             } else
             {
                 return this;
             }
-            return this;
         }
 
                 

@@ -13,7 +13,7 @@ namespace JA {
             damageCollider.gameObject.SetActive(true);
             damageCollider.isTrigger = true;
             damageCollider.enabled = false;
-            animatorHandler = FindObjectOfType<AnimatorHandler>();
+            animatorHandler = FindFirstObjectByType<AnimatorHandler>();
         }
 
         public void EnableDamageCollider()

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BackSwing
   m_EditorClassIdentifier: Assembly-CSharp::JA.EnemyAttackAction
   actionAnimation: Boss_backSwing1
-  attackScore: 5
+  attackScore: 4
   recoveryTime: 3
   maximumAttackAngle: 160
   minimumAttackAngle: 90

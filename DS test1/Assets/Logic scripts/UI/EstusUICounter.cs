@@ -4,17 +4,16 @@ using TMPro;
 
 public class EstusUICounter : MonoBehaviour
 {
-    //public Text CounterText;  // public if you want to drag your text object in there manually
     [SerializeField] TMPro.TextMeshProUGUI counterText;
-
-    private void Start()
-    {
-        //counterText = GetComponent<TMPro.TextMeshProUGUI>();
-    }
+    [SerializeField] UnityEngine.UI.Image EstusImage;
         
     public void ChangeEstusCounterText(int EstusCount)
     {
-        //Debug.Log("ezitt: " + counterText);
         counterText.text = EstusCount.ToString();
+    }
+
+    public void ChangeCounterIconColor(){
+        //Color32(233,189,122,65);
+        EstusImage.color = new Color32(119,135,142,40);
     }
 }

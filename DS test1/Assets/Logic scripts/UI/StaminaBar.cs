@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace JA {
     public class StaminaBar : MonoBehaviour
     {
-        public Slider slider;
+        [SerializeField] private Slider slider;
 
         private void Start()
         {

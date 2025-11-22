@@ -4,14 +4,13 @@ using Unity.AI.Navigation;
 
 public class PillarPlacement : MonoBehaviour
 {
-    public GameObject pillarModel;
-    public GameObject centerPoint;
-    public GameObject spawnFolder;
-    public NavMeshSurface navSurface;
+    [SerializeField] private GameObject pillarModel;
+    [SerializeField] private GameObject centerPoint;
+    [SerializeField] private GameObject spawnFolder;
+    [SerializeField] private NavMeshSurface navSurface;
 
     private void Start()
     {
-        //CreatePillarsAroundPoint(12, centerPoint.transform.position, 27.2f);
         CreatePillarsAroundPoint(12, centerPoint.transform.position, 27f);
         navSurface.BuildNavMesh();
     }

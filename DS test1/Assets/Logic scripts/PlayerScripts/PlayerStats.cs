@@ -3,29 +3,29 @@ using UnityEngine;
 namespace JA {
     public class PlayerStats : CharacterStats
     {
-        public HealthBar healthbar;
-        public StaminaBar staminabar;
+        [SerializeField] private HealthBar healthbar;
+        [SerializeField] private StaminaBar staminabar;
 
-        public float staminaRegenerationAmount = 25;
-        public float staminaRegenTimer = 0;
-        public int estusCount = 3;
+        [SerializeField] private float staminaRegenerationAmount = 25;
+        [SerializeField] private float staminaRegenTimer = 0;
+        [SerializeField] private int estusCount = 3;
 
         AnimatorHandler animatorHandler;
         PlayerManager playerManager;
         EstusUICounter estusUICounter;
         DeathScreen deathScreen;
-        public EstusItem estusItem; 
+        EstusItem estusItem; 
         EstusHandler estusHandler;    
 
         public void Awake()
         {
             playerManager = GetComponent<PlayerManager>();
-            healthbar = FindObjectOfType<HealthBar>();
-            staminabar = FindObjectOfType<StaminaBar>();
+            healthbar = FindFirstObjectByType<HealthBar>();
+            staminabar = FindFirstObjectByType<StaminaBar>();
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
 
-            estusUICounter = FindObjectOfType<EstusUICounter>();
-            deathScreen = FindObjectOfType<DeathScreen>();
+            estusUICounter = FindFirstObjectByType<EstusUICounter>();
+            deathScreen = FindFirstObjectByType<DeathScreen>();
             estusHandler = GetComponent<EstusHandler>();
         }
 
@@ -136,6 +136,9 @@ namespace JA {
 
             healthbar.SetCurrentHealth(currentHealth);
             estusUICounter.ChangeEstusCounterText(estusCount);
+            if (estusCount < 1){
+                estusUICounter.ChangeCounterIconColor();
+            }
         
         }
     

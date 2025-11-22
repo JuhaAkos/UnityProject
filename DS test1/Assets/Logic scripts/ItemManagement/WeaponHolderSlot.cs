@@ -4,7 +4,7 @@ namespace JA
 {
     public class WeaponHolderSlot : MonoBehaviour
     {
-        public Transform parentOverride;
+        [SerializeField] Transform parentOverride;
         public bool isLeftHandSlot;
         public bool isRightHandSlot;
 

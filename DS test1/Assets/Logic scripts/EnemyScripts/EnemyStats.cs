@@ -4,14 +4,14 @@ namespace JA {
     public class EnemyStats : CharacterStats
     {
         Animator animator;
-        public BossHealthBar bossHealthbar;
+        [SerializeField] BossHealthBar bossHealthbar;
         VictoryScreen victoryScreen;        
 
-        public void Awake()
+        void Awake()
         {
             animator = GetComponentInChildren<Animator>();
-            bossHealthbar = FindObjectOfType<BossHealthBar>();
-            victoryScreen = FindObjectOfType<VictoryScreen>();
+            bossHealthbar = FindFirstObjectByType<BossHealthBar>();
+            victoryScreen = FindFirstObjectByType<VictoryScreen>();
         }
 
 

@@ -3,11 +3,11 @@ using UnityEngine;
 namespace JA {
     public class WakeUpState : State
     {
-        public PursueTargetState pursueTargetState;
-        public DeadState deadState;
-        public LayerMask detectionLayer;  
+        [SerializeField] PursueTargetState pursueTargetState;
+        [SerializeField] DeadState deadState;
+        [SerializeField] LayerMask detectionLayer;  
         
-        public float wakeUpTimer = 0;
+        [SerializeField] float wakeUpTimer = 0;
 
        private void Awake()
         {

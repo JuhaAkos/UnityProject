@@ -8,11 +8,11 @@ namespace JA {
         EnemyAnimatorHandler enemyAnimatorHandler;
         EnemyStats enemyStats;
 
-        public Vector3 lookAngle;
+        [SerializeField] Vector3 lookAngle;
 
-        public NavMeshAgent navmeshAgent;
-        public State currentState;
-        public CharacterStats currentTarget;
+        public  NavMeshAgent navmeshAgent;
+        [SerializeField] State currentState;
+        public  CharacterStats currentTarget;
         public bool isPerformingAction;
         public bool isInteracting;       
         public float rotationSpeed = 25;
@@ -23,22 +23,21 @@ namespace JA {
         public EnemyAttackAction currentAttack;
         */
 
-        public float detectionRadius = 20;
-        public float maximumDetectionAngle = 50;
-        public float minimumDetectionAngle = -50;
+        public  float maximumDetectionAngle = 50;
+        public  float minimumDetectionAngle = -50;
 
-        public float viewableAngle;
+        [SerializeField] float viewableAngle;
 
-        public float currentRecoveryTime = 0;
+        public  float currentRecoveryTime = 0;
 
         public Rigidbody enemyRigidBody;
 
         #region attackstate timeout
         public bool isOnAttackTimeOut;
         public bool timeOutStarted;
-        public float attackTimeOutTimer = 0;
-        public bool tooMuchTimeOut;
-        public float tooMuchTimeOutTimer = 0;
+        [SerializeField] float attackTimeOutTimer = 0;
+        [SerializeField] bool tooMuchTimeOut;
+        [SerializeField] float tooMuchTimeOutTimer = 0;
         #endregion
 
         private void Awake()

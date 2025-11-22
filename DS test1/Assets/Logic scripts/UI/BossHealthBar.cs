@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class BossHealthBar : MonoBehaviour
 {
-    public GameObject bossUIPanel;
-    public Slider slider;
+    [SerializeField] private GameObject bossUIPanel;
+    [SerializeField] private Slider slider;
 
     private void Start()
     {
