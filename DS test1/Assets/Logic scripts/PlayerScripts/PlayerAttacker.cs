@@ -32,14 +32,13 @@ namespace JA
                 animatorHandler.anim.SetBool("canDoCombo", false);
                 if (lastAttack == weapon.OH_Light_Attack_1)
                 {
-                    //Debug.Log("STAGE 1: "  + lastAttack);
                     animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_2, true);
                     lastAttack = weapon.OH_Light_Attack_2;
                 } else if (lastAttack == weapon.OH_Light_Attack_2)
                 {
-                    //Debug.Log("STAGE 2: " + lastAttack);
                     animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_3, true);
                     lastAttack = weapon.OH_Light_Attack_3;
+                    
                 } else if (lastAttack == weapon.OH_Heavy_Attack_1)
                 {
                     animatorHandler.PlayTargetAnimation(weapon.OH_Heavy_Attack_2, true);
@@ -58,7 +57,7 @@ namespace JA
 
             if (inputHandler.lockOnFlag)
             {
-                playerLocomotion.LockOnRotation();
+                //playerLocomotion.LockOnRotation();
                 
             } 
 
@@ -77,7 +76,7 @@ namespace JA
 
             if (inputHandler.lockOnFlag)
             {
-                playerLocomotion.LockOnRotation();
+               //playerLocomotion.LockOnRotation();
                 
             } 
             

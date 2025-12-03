@@ -12,11 +12,7 @@ namespace JA {
         [Header("Player Flags")]
         public bool isInteracting;
         public bool isSprinting;
-        public bool isInAir;
-        public bool isGrounded;
         public bool canDoCombo;
-        public bool isUsingRightHand;
-        public bool isUsingLeftHand;
         public bool isInvulnerable;
 
 
@@ -50,10 +46,6 @@ namespace JA {
 
             canDoCombo = anim.GetBool("canDoCombo");
             isInvulnerable = anim.GetBool("isInvulnerable");
-            anim.SetBool("isInAir", isInAir);
-
-            isUsingRightHand = anim.GetBool("isUsingRightHand");
-            isUsingLeftHand = anim.GetBool("isUsingLeftHand");
 
             inputHandler.TickInput(delta);  
             playerLocomotion.HandleRollingAndSprinting(delta);

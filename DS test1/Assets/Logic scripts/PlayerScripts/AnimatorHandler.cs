@@ -103,7 +103,7 @@ namespace JA {
         }
 
         //inits missing because its a unity based function?
-        //this stop root motion from happening
+        //this stops root motion from happening
         private void OnAnimatorMove()
         //private void FixedUpdate()
         {

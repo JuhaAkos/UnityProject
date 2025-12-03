@@ -38,7 +38,6 @@ public class PillarPlacement : MonoBehaviour
             /* Rotate the enemy to face towards player */
             //enemy.transform.LookAt(point);
 
-
             /* Adjust height */
             //enemy.transform.Translate(new Vector3(0, enemy.transform.localScale.y / 2, 0));
             enemy.transform.Translate(new Vector3(0, 0, 0));

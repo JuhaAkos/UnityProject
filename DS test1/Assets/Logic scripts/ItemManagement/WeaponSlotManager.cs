@@ -5,12 +5,8 @@ namespace JA
     public class WeaponSlotManager : MonoBehaviour
     {
         PlayerManager playerManager;
-        WeaponHolderSlot leftHandSlot;
         WeaponHolderSlot rightHandSlot;
-
-        DamageCollider leftHandDamageCollider;
         DamageCollider rightHandDamageCollider;
-
         public WeaponItem attackingWeapon;
 
         Animator animator;
@@ -25,15 +21,9 @@ namespace JA
             WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();
             foreach (WeaponHolderSlot weaponSlot in weaponHolderSlots)
             {
-                if (weaponSlot.isLeftHandSlot)
-                {
-                    leftHandSlot = weaponSlot;
-                }
-                else if (weaponSlot.isRightHandSlot)
-                {
-                    rightHandSlot = weaponSlot;
-                }
+                rightHandSlot = weaponSlot;
             }
+
         }
 
         public void LoadWeaponOnSlot(Item item, bool isLeft)
@@ -46,17 +36,6 @@ namespace JA
         {
             rightHandSlot.LoadWeaponModel(weaponItem);
             LoadWeaponDamageCollider();
-
-            #region Handle weapon idle anim
-            if (weaponItem != null)
-            {
-                animator.CrossFade(weaponItem.right_Hand_Idle, 0.2f);
-            }
-            else
-            {
-                animator.CrossFade("Right Arm Empty", 0.2f);
-            }
-            #endregion
         }
 
         #region Handle Weapon damage colliders
@@ -79,7 +58,6 @@ namespace JA
         public void CloseDamageCollider()
         {
             rightHandDamageCollider.DisableDamageCollider();
-            //leftHandDamageCollider.DisableDamageCollider();
         }
 
         #endregion

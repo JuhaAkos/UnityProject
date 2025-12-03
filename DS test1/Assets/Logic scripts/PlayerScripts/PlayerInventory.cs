@@ -9,15 +9,11 @@ namespace JA
         WeaponSlotManager weaponSlotManager;
 
         public WeaponItem rightWeapon;
-        public WeaponItem leftWeapon;
-
-        [SerializeField] WeaponItem unarmedWeapon;
 
         [SerializeField] WeaponItem[] weaponsInRightHandSlots = new WeaponItem[1];
-        [SerializeField] WeaponItem[] weaponsInLeftHandSlots = new WeaponItem[1];
         [SerializeField] EstusItem estusFlask;
 
-        [SerializeField] int currentRightWeaponIndex = -1;
+        [SerializeField] int currentRightWeaponIndex = 0;
 
         public List<WeaponItem> weaponInventory;
 
@@ -28,8 +24,7 @@ namespace JA
 
         private void Start()
         {
-            rightWeapon = weaponsInRightHandSlots[0];
-            leftWeapon = unarmedWeapon;            
+            rightWeapon = weaponsInRightHandSlots[0];      
 
             weaponSlotManager.LoadWeaponOnSlot(rightWeapon, false);
         }
@@ -50,9 +45,9 @@ namespace JA
 
             if (currentRightWeaponIndex > weaponsInRightHandSlots.Length - 1)
             {
-                currentRightWeaponIndex = -1;
-                rightWeapon = unarmedWeapon;
-                weaponSlotManager.LoadWeaponOnSlot(unarmedWeapon, false);
+                currentRightWeaponIndex = 0;
+                rightWeapon = weaponsInRightHandSlots[0];  
+                weaponSlotManager.LoadWeaponOnSlot(rightWeapon, false);
             }
             else if (weaponsInRightHandSlots[currentRightWeaponIndex] != null)
             {
@@ -62,14 +57,6 @@ namespace JA
             else
             {
                 currentRightWeaponIndex = currentRightWeaponIndex + 1;
-            }
-
-
-            if (currentRightWeaponIndex > weaponsInRightHandSlots.Length - 1)
-            {
-                currentRightWeaponIndex = -1;
-                rightWeapon = unarmedWeapon;
-                weaponSlotManager.LoadWeaponOnSlot(unarmedWeapon, false);
             }
 
         }

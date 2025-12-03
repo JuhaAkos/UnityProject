@@ -1,11 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-//using Mathf;
 
 namespace JA {
     //rigidbody interpolation was changed from default
-    //explanation video CAMERA
 
     public class CameraHandler : MonoBehaviour
     {
@@ -14,20 +12,17 @@ namespace JA {
 
         [SerializeField] Transform targetTransform; //camera follows this object
         [SerializeField] Transform cameraTransform;
-        [SerializeField] Transform cameraPivotTransform; //up and down pivot?
+        [SerializeField] Transform cameraPivotTransform; //up and down pivot
         private Transform myTransform;
-        private Vector3 cameraTransformPosition; //to also use camera z position changes
+        private Vector3 cameraTransformPosition;
         public LayerMask ignoreLayers;
 
-        private Vector3 cameraFollowVelocity = Vector3.zero; //for camspeed
+        private Vector3 cameraFollowVelocity = Vector3.zero;
 
         [SerializeField] static CameraHandler singleton;
 
-        //public float lookSpeed = 0.1f;
         [SerializeField] float followSpeed = 0.08f;
-        //public float pivotSpeed = 0.02f;
 
-        //EP23 CUSTOM FIX
         [SerializeField] float lookSpeed = 260f;
         [SerializeField] float pivotSpeed = 100f;
 
@@ -49,8 +44,6 @@ namespace JA {
         public Transform currentLockOnTarget;
         List<CharacterManager> availableTargets = new List<CharacterManager>();
         public Transform nearestLockOnTarget;
-        public Transform leftLockTarget;
-        public Transform rightLockTarget;
         public float maximumLockOnDistance = 30;
         //lockon and non-lockon camera height
         public float lockedPivotPosition = 2.25f;
@@ -97,10 +90,8 @@ namespace JA {
                 //lookAngle += (mouseXInput * lookSpeed) / delta;                       
                 //pivotAngle -= (mouseYInput * pivotSpeed) / delta;
 
-                //EP 23 custom fix
                 lookAngle += mouseXInput * lookSpeed * delta;
                 pivotAngle -= mouseYInput * pivotSpeed * delta;
-                //Debug.Log("lookA: " + lookAngle + ", pivotA: " + pivotAngle);
 
                 //cuts pivotangle value between the boundary 
                 pivotAngle = Mathf.Clamp(pivotAngle, minimumPivot, maximumPivot);
@@ -148,7 +139,6 @@ namespace JA {
             //hit variable: stores information on what we hit
             if (Physics.SphereCast(cameraPivotTransform.position, cameraSphereRadius, direction, out hit, Mathf.Abs(targetPosition), ignoreLayers))
             {
-
                 float dis = Vector3.Distance(cameraPivotTransform.position, hit.point);
                 targetPosition = -(dis - cameraCollisionOffset);
             }
@@ -167,8 +157,6 @@ namespace JA {
         {
             availableTargets.Clear();
             float shortestDistance = Mathf.Infinity;
-            float shortestDistanceOfLeftTarget = Mathf.Infinity;
-            float shortestDistanceOfRightTarget = Mathf.Infinity;
 
             Collider[] colliders = Physics.OverlapSphere(targetTransform.position, 26);
 
@@ -213,7 +201,6 @@ namespace JA {
             //find closestlockon
             for (int k = 0; k < availableTargets.Count; k++)
             {
-                //Debug.Log("FOR k: " + k);
                 float distanceFromTarget = Vector3.Distance(targetTransform.position, availableTargets[k].transform.position);
 
                 if (distanceFromTarget < shortestDistance)
@@ -226,34 +213,6 @@ namespace JA {
                 {
                     //if they are on the same x coordinate -> zero value -> not added
                     Vector3 relativeEnemyPosition = currentLockOnTarget.InverseTransformPoint(availableTargets[k].transform.position);
-                    //Debug.Log("Relative.x: " + relativeEnemyPosition.x);
-                    //Debug.Log("Relative.x calc: " + currentLockOnTarget.InverseTransformPoint(availableTargets[k].transform.position));
-                    //Debug.Log("Target: " + currentLockOnTarget);
-                    //changing between apllicable targets
-                    var distanceFromLeftTarget = currentLockOnTarget.transform.position.x - availableTargets[k].transform.position.x;
-                    var distanceFromRightTarget = currentLockOnTarget.transform.position.x + availableTargets[k].transform.position.x;
-
-                    /*
-                    Debug.Log("Relative.x: " + relativeEnemyPosition.x + " -> bigger than zero? - " + (relativeEnemyPosition.x > 0.00f) +
-                        "\nL (>0) - distance from L: " + distanceFromLeftTarget + ", SHORTEST dist. from L: " + shortestDistanceOfLeftTarget +
-                       "\nR (<0) - distance from R: " + distanceFromRightTarget + ", SHORTEST dist. from R: " + shortestDistanceOfRightTarget
-
-                    );
-                    */
-
-                    if (relativeEnemyPosition.x > 0.00f && distanceFromLeftTarget < shortestDistanceOfLeftTarget)
-                    {
-                        //Debug.Log("found better on left");
-                        shortestDistanceOfLeftTarget = distanceFromLeftTarget;
-                        leftLockTarget = availableTargets[k].lockOnTransform;
-                    }
-
-                    if (relativeEnemyPosition.x < 0.00f && distanceFromRightTarget < shortestDistanceOfRightTarget)
-                    {
-                        //Debug.Log("found better on right");
-                        shortestDistanceOfRightTarget = distanceFromRightTarget;
-                        rightLockTarget = availableTargets[k].lockOnTransform;
-                    }
                 }
             }
 

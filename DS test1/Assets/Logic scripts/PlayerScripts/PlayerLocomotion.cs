@@ -14,10 +14,8 @@ namespace JA {
         [SerializeField] CameraHandler cameraHandler;
 
         public Vector3 moveDirection; //which way we are facing
-        //public for fall movement
 
         [SerializeField] new Rigidbody rigidbody;
-        //public Gameobject normalCamera;
 
         [Header("Movement Stats")]
         [SerializeField]
@@ -27,7 +25,6 @@ namespace JA {
         [SerializeField]
         float rotationSpeed = 10;
 
-        //seri used instead of public for inspector
         [Header("Stamina Costs")]
         [SerializeField] int rollStaminaCost = 6;
         [SerializeField] int backstepStaminaCost = 12;
@@ -58,11 +55,10 @@ namespace JA {
 
         private void HandleRotation(float delta)
         {
-            //starts out as all zeroes
             Vector3 targetDir = Vector3.zero;
             float moveOverride = inputHandler.moveAmount;
 
-            //roation direction calculation then normalize
+            //roation direction calculation then normalize (length to 1, keep direction)
             targetDir = cameraObject.forward * inputHandler.vertical;
             targetDir += cameraObject.right * inputHandler.horizontal;
 

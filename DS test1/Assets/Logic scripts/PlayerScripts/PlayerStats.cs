@@ -12,10 +12,12 @@ namespace JA {
 
         AnimatorHandler animatorHandler;
         PlayerManager playerManager;
+
         EstusUICounter estusUICounter;
-        DeathScreen deathScreen;
-        EstusItem estusItem; 
-        EstusHandler estusHandler;    
+        EstusItem estusItem;
+        EstusHandler estusHandler; 
+
+        DeathScreen deathScreen;   
 
         public void Awake()
         {

@@ -12,9 +12,8 @@ namespace JA
         public float mouseX;
         public float mouseY;
 
-        //input names based on controller inputs for now
         public bool estus_Input;
-        public bool b_Input;
+        public bool roll_Input;
         public bool lightA_Input;
         public bool heavyA_Input;
 
@@ -67,8 +66,8 @@ namespace JA
                 inputActions.PlayerActions.HeavyInput.performed += i => heavyA_Input = true;
                 inputActions.PlayerActions.Estus.performed += i => estus_Input = true;
 
-                inputActions.PlayerActions.Roll.performed += i => b_Input = true;
-                inputActions.PlayerActions.Roll.canceled += inputActions => b_Input = false;
+                inputActions.PlayerActions.Roll.performed += i => roll_Input = true;
+                inputActions.PlayerActions.Roll.canceled += inputActions => roll_Input = false;
 
                 inputActions.MainMenuUINavigation.ESC.performed += i => esc_Input = true;
 
@@ -108,13 +107,13 @@ namespace JA
 
         private void HandleRollInput(float delta)
         {
-            if (b_Input)
+            if (roll_Input)
             {
                 rollInputTimer += delta;
 
                 if (playerStats.currentStamina <= 0)
                 {
-                    b_Input = false;
+                    roll_Input = false;
                     sprintFlag = false;
                 }
                 
@@ -161,7 +160,6 @@ namespace JA
                         return;
                     }
 
-                    animatorHandler.anim.SetBool("isUsingRightHand", true);
                     playerAttacker.HandleLightAttack(playerInventory.rightWeapon);
                 }
 
@@ -186,7 +184,6 @@ namespace JA
                         return;
                     }
 
-                    animatorHandler.anim.SetBool("isUsingRightHand", true);
                     playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
                 }
             }

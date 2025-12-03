@@ -54,16 +54,16 @@ namespace JA {
             Vector3 relativeDirection = transform.InverseTransformDirection(enemyManager.navmeshAgent.desiredVelocity);
 
             distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
-            {
-                Vector3 targetVelocity = enemyManager.enemyRigidBody.linearVelocity;
+            
+            Vector3 targetVelocity = enemyManager.enemyRigidBody.linearVelocity;
 
-                enemyManager.navmeshAgent.enabled = true;
-                enemyManager.navmeshAgent.SetDestination(enemyManager.currentTarget.transform.position);
-                enemyManager.enemyRigidBody.linearVelocity = targetVelocity;
-                //ENEMYMANAGER.transform!!!
-                enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.navmeshAgent.transform.rotation, enemyManager.rotationSpeed / 20000 / Time.deltaTime);
+            enemyManager.navmeshAgent.enabled = true;
+            enemyManager.navmeshAgent.SetDestination(enemyManager.currentTarget.transform.position);
+            enemyManager.enemyRigidBody.linearVelocity = targetVelocity;
+            //ENEMYMANAGER.transform!!!
+            enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.navmeshAgent.transform.rotation, enemyManager.rotationSpeed / 20000 / Time.deltaTime);
 
-            }
+            
 
         }
     }
